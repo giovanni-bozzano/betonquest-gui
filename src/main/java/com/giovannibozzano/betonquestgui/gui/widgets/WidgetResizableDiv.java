@@ -1,6 +1,7 @@
 package com.giovannibozzano.betonquestgui.gui.widgets;
 
 import com.giovannibozzano.betonquestgui.BetonQuestGui;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
@@ -12,6 +13,8 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import javax.annotation.Nonnull;
 
 @OnlyIn(Dist.CLIENT)
 public class WidgetResizableDiv extends AbstractGui implements IRenderable
@@ -45,7 +48,7 @@ public class WidgetResizableDiv extends AbstractGui implements IRenderable
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float f)
+    public void render(@Nonnull MatrixStack matrixStack, int mouseX, int mouseY, float f)
     {
         Minecraft minecraft = Minecraft.getInstance();
         RenderSystem.color4f(this.red, this.green, this.blue, this.alpha);

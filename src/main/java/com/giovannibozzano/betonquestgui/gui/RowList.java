@@ -1,5 +1,7 @@
 package com.giovannibozzano.betonquestgui.gui;
 
+import net.minecraft.util.text.ITextProperties;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,9 +53,9 @@ public class RowList
         this.rowModifier = rowModifier;
     }
 
-    public void add(List<String> list)
+    public void add(List<ITextProperties> list)
     {
-        for (String text : list) {
+        for (ITextProperties text : list) {
             this.rowList.add(new Row(text));
         }
     }

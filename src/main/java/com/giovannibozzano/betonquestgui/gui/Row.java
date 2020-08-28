@@ -1,15 +1,17 @@
 package com.giovannibozzano.betonquestgui.gui;
 
+import net.minecraft.util.text.ITextProperties;
+
 public class Row
 {
-    private final String text;
+    private final ITextProperties text;
 
-    public Row(String text)
+    public Row(ITextProperties text)
     {
         this.text = text;
     }
 
-    public String getText()
+    public ITextProperties getText()
     {
         return this.text;
     }

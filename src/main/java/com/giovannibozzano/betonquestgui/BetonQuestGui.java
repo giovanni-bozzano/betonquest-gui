@@ -22,6 +22,6 @@ public class BetonQuestGui
     public static void setup(FMLCommonSetupEvent event)
     {
         ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(() -> FMLNetworkConstants.IGNORESERVERONLY, (a, b) -> true));
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> PacketHandler::registerPackets);
+        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> PacketHandler::registerPackets);
     }
 }

@@ -1,12 +1,20 @@
 package com.giovannibozzano.betonquestgui.gui.widgets;
 
 import com.giovannibozzano.betonquestgui.gui.Row;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.IRenderable;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.apache.commons.lang3.mutable.MutableInt;
+
+import javax.annotation.Nonnull;
+import java.util.Optional;
 
 @OnlyIn(Dist.CLIENT)
 public class WidgetRow extends AbstractGui implements IRenderable
@@ -30,8 +38,14 @@ public class WidgetRow extends AbstractGui implements IRenderable
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float unused)
+    public void render(@Nonnull MatrixStack matrixStack, int mouseX, int mouseY, float unused)
     {
-        this.drawString(Minecraft.getInstance().fontRenderer, this.row.getText(), this.x, this.y, this.color);
+        MutableInt xOffset = new MutableInt();
+        this.row.getText().func_230439_a_((style, text) -> {
+            ITextComponent textComponent = new StringTextComponent(text).setStyle(style);
+            drawString(matrixStack, Minecraft.getInstance().fontRenderer, new StringTextComponent(text).setStyle(style), this.x + xOffset.getValue(), this.y, this.color);
+            xOffset.add(Minecraft.getInstance().fontRenderer.func_238414_a_(textComponent));
+            return Optional.empty();
+        }, Style.EMPTY);
     }
 }

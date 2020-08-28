@@ -2,6 +2,7 @@ package com.giovannibozzano.betonquestgui.gui.widgets;
 
 import com.giovannibozzano.betonquestgui.gui.Row;
 import com.giovannibozzano.betonquestgui.gui.RowList;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.audio.SoundHandler;
@@ -12,6 +13,8 @@ import net.minecraft.client.gui.IRenderable;
 import net.minecraft.util.SoundEvents;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import javax.annotation.Nonnull;
 
 @OnlyIn(Dist.CLIENT)
 public class WidgetChoice extends AbstractGui implements IRenderable, IGuiEventListener
@@ -47,15 +50,15 @@ public class WidgetChoice extends AbstractGui implements IRenderable, IGuiEventL
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float unused)
+    public void render(@Nonnull MatrixStack matrixStack, int mouseX, int mouseY, float unused)
     {
         FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
         for (int row = 0; this.choice.getShift() + row < this.choice.getLinesAmount() && row - this.choice.getRowModifier() < this.maximumHeight / fontRenderer.FONT_HEIGHT; row++) {
             Row textRow = this.choice.getRow(row);
             if (this.isMouseOver(mouseX, mouseY)) {
-                new WidgetRow(this.x, this.y + row * fontRenderer.FONT_HEIGHT, this.mouseOverColor, textRow).render(mouseX, mouseY, unused);
+                new WidgetRow(this.x, this.y + row * fontRenderer.FONT_HEIGHT, this.mouseOverColor, textRow).render(matrixStack, mouseX, mouseY, unused);
             } else {
-                new WidgetRow(this.x, this.y + row * fontRenderer.FONT_HEIGHT, textRow).render(mouseX, mouseY, unused);
+                new WidgetRow(this.x, this.y + row * fontRenderer.FONT_HEIGHT, textRow).render(matrixStack, mouseX, mouseY, unused);
             }
         }
     }

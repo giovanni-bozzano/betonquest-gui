@@ -1,6 +1,7 @@
 package com.giovannibozzano.betonquestgui.gui.widgets;
 
 import com.giovannibozzano.betonquestgui.BetonQuestGui;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
@@ -9,8 +10,11 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldVertexBufferUploader;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import javax.annotation.Nonnull;
 
 @OnlyIn(Dist.CLIENT)
 public class WidgetButton extends Button
@@ -24,7 +28,7 @@ public class WidgetButton extends Button
 
     public WidgetButton(int x, int y, int width, int height, Button.IPressable onPress, int type)
     {
-        super(x, y, width, height, "", onPress);
+        super(x, y, width, height, new StringTextComponent(""), onPress);
         this.onPress = onPress;
         this.type = type;
     }
@@ -36,7 +40,7 @@ public class WidgetButton extends Button
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float unused)
+    public void render(@Nonnull MatrixStack matrixStack, int mouseX, int mouseY, float unused)
     {
         if (!this.visible) {
             return;

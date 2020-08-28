@@ -7,6 +7,7 @@ import com.giovannibozzano.betonquestgui.network.packet.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.network.NetworkRegistry;
@@ -75,15 +76,15 @@ public class PacketHandler
                 if (part.length() == 2 && part.charAt(0) == '\u00A7') {
                     textFormatting.add(TextFormatting.fromFormattingCode(part.charAt(1)));
                 } else {
-                    TextComponent partTextComponent = new StringTextComponent(part);
+                    Style style = Style.EMPTY;
                     for (TextFormatting format : textFormatting) {
-                        partTextComponent.applyTextStyle(format);
+                        style = style.applyFormatting(format);
                     }
-                    textComponent.appendSibling(partTextComponent);
+                    textComponent.append(new StringTextComponent(part).setStyle(style));
                     textFormatting.clear();
                 }
             }
-            BETONQUEST_CONVERSATION.appendToLeft(new StringTextComponent(npcName).applyTextStyle(TextFormatting.BOLD).applyTextStyle(TextFormatting.GREEN), textComponent);
+            BETONQUEST_CONVERSATION.appendToLeft(new StringTextComponent(npcName).setStyle(Style.EMPTY.applyFormatting(TextFormatting.BOLD).applyFormatting(TextFormatting.GREEN)), textComponent);
             BETONQUEST_CONVERSATION.resetRightList();
         }
     }
