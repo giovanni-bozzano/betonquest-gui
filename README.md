@@ -7,7 +7,7 @@ This client side Forge mod is designed to work with the BetonQuest Spigot plugin
 
 ## Requirements
 #### Server:
-* [BetonQuest](https://github.com/BetonQuest/BetonQuest)
-* [BetonQuest GUI Plugin](https://github.com/giovanni-bozzano/betonquest-gui-plugin) (include ```gui``` in ```default_conversation_IO``` in BetonQuest ```config.yml```)
+* [BetonQuest](https://www.spigotmc.org/resources/betonquest.2117/)
+* [BetonQuest GUI Plugin](https://github.com/giovanni-bozzano/betonquest-gui-plugin/releases) (include ```gui``` in ```default_conversation_IO``` in BetonQuest ```config.yml```)
 #### Client:
 * Forge
