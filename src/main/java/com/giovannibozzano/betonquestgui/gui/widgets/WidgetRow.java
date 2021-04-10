@@ -41,10 +41,10 @@ public class WidgetRow extends AbstractGui implements IRenderable
     public void render(@Nonnull MatrixStack matrixStack, int mouseX, int mouseY, float unused)
     {
         MutableInt xOffset = new MutableInt();
-        this.row.getText().func_230439_a_((style, text) -> {
+        this.row.getText().visit((style, text) -> {
             ITextComponent textComponent = new StringTextComponent(text).setStyle(style);
-            drawString(matrixStack, Minecraft.getInstance().fontRenderer, new StringTextComponent(text).setStyle(style), this.x + xOffset.getValue(), this.y, this.color);
-            xOffset.add(Minecraft.getInstance().fontRenderer.func_238414_a_(textComponent));
+            drawString(matrixStack, Minecraft.getInstance().font, new StringTextComponent(text).setStyle(style), this.x + xOffset.getValue(), this.y, this.color);
+            xOffset.add(Minecraft.getInstance().font.width(textComponent));
             return Optional.empty();
         }, Style.EMPTY);
     }

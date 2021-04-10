@@ -48,26 +48,26 @@ public class WidgetButton extends Button
         Minecraft minecraft = Minecraft.getInstance();
         if (this.type == 0) {
             if (this.isMouseOver(mouseX, mouseY)) {
-                minecraft.getTextureManager().bindTexture(BUTTON_DOWN_OVER_TEXTURE);
+                minecraft.getTextureManager().bind(BUTTON_DOWN_OVER_TEXTURE);
             } else {
-                minecraft.getTextureManager().bindTexture(BUTTON_DOWN_TEXTURE);
+                minecraft.getTextureManager().bind(BUTTON_DOWN_TEXTURE);
             }
         } else {
             if (this.isMouseOver(mouseX, mouseY)) {
-                minecraft.getTextureManager().bindTexture(BUTTON_UP_OVER_TEXTURE);
+                minecraft.getTextureManager().bind(BUTTON_UP_OVER_TEXTURE);
             } else {
-                minecraft.getTextureManager().bindTexture(BUTTON_UP_TEXTURE);
+                minecraft.getTextureManager().bind(BUTTON_UP_TEXTURE);
             }
         }
-        BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
+        BufferBuilder bufferBuilder = Tessellator.getInstance().getBuilder();
         bufferBuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-        bufferBuilder.pos(this.x, this.y + this.height, this.getBlitOffset()).tex(0, 1).endVertex();
-        bufferBuilder.pos(this.x + this.width, this.y + this.height, this.getBlitOffset()).tex(1, 1).endVertex();
-        bufferBuilder.pos(this.x + this.width, this.y, this.getBlitOffset()).tex(1, 0).endVertex();
-        bufferBuilder.pos(this.x, this.y, this.getBlitOffset()).tex(0, 0).endVertex();
-        bufferBuilder.finishDrawing();
+        bufferBuilder.vertex(this.x, this.y + this.height, this.getBlitOffset()).uv(0, 1).endVertex();
+        bufferBuilder.vertex(this.x + this.width, this.y + this.height, this.getBlitOffset()).uv(1, 1).endVertex();
+        bufferBuilder.vertex(this.x + this.width, this.y, this.getBlitOffset()).uv(1, 0).endVertex();
+        bufferBuilder.vertex(this.x, this.y, this.getBlitOffset()).uv(0, 0).endVertex();
+        bufferBuilder.end();
         RenderSystem.enableAlphaTest();
-        WorldVertexBufferUploader.draw(bufferBuilder);
+        WorldVertexBufferUploader.end(bufferBuilder);
     }
 
     public void setVisible(boolean visible)

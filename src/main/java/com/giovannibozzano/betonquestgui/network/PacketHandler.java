@@ -45,7 +45,7 @@ public class PacketHandler
 
     public static void handleCloseGui()
     {
-        Minecraft.getInstance().displayGuiScreen(null);
+        Minecraft.getInstance().setScreen(null);
     }
 
     public static void handleAllowCloseGui()
@@ -58,15 +58,15 @@ public class PacketHandler
     public static void handleOpenGui()
     {
         if (BETONQUEST_CONVERSATION != null) {
-            Minecraft.getInstance().displayGuiScreen(BETONQUEST_CONVERSATION);
+            Minecraft.getInstance().setScreen(BETONQUEST_CONVERSATION);
         }
     }
 
     public static void handleNpcDialogue(String npcName, String text)
     {
         if (BETONQUEST_CONVERSATION != null) {
-            if (Minecraft.getInstance().currentScreen != BETONQUEST_CONVERSATION) {
-                Minecraft.getInstance().displayGuiScreen(BETONQUEST_CONVERSATION);
+            if (Minecraft.getInstance().screen != BETONQUEST_CONVERSATION) {
+                Minecraft.getInstance().setScreen(BETONQUEST_CONVERSATION);
             }
             BETONQUEST_CONVERSATION.updateNpcName(npcName);
             String[] parts = text.split(BetonQuestConversation.FORMATTING_CODE_PATTERN.pattern());
@@ -74,17 +74,17 @@ public class PacketHandler
             List<TextFormatting> textFormatting = new ArrayList<>();
             for (String part : parts) {
                 if (part.length() == 2 && part.charAt(0) == '\u00A7') {
-                    textFormatting.add(TextFormatting.fromFormattingCode(part.charAt(1)));
+                    textFormatting.add(TextFormatting.getByCode(part.charAt(1)));
                 } else {
                     Style style = Style.EMPTY;
                     for (TextFormatting format : textFormatting) {
-                        style = style.applyFormatting(format);
+                        style = style.applyFormat(format);
                     }
                     textComponent.append(new StringTextComponent(part).setStyle(style));
                     textFormatting.clear();
                 }
             }
-            BETONQUEST_CONVERSATION.appendToLeft(new StringTextComponent(npcName).setStyle(Style.EMPTY.applyFormatting(TextFormatting.BOLD).applyFormatting(TextFormatting.GREEN)), textComponent);
+            BETONQUEST_CONVERSATION.appendToLeft(new StringTextComponent(npcName).setStyle(Style.EMPTY.applyFormat(TextFormatting.BOLD).applyFormat(TextFormatting.GREEN)), textComponent);
             BETONQUEST_CONVERSATION.resetRightList();
         }
     }
@@ -92,8 +92,8 @@ public class PacketHandler
     public static void handlePlayerChoice(int id, String text)
     {
         if (BETONQUEST_CONVERSATION != null) {
-            if (Minecraft.getInstance().currentScreen != BETONQUEST_CONVERSATION) {
-                Minecraft.getInstance().displayGuiScreen(BETONQUEST_CONVERSATION);
+            if (Minecraft.getInstance().screen != BETONQUEST_CONVERSATION) {
+                Minecraft.getInstance().setScreen(BETONQUEST_CONVERSATION);
             }
             BETONQUEST_CONVERSATION.appendToRight(new IndexedChoice(id, text));
         }

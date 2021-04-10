@@ -37,7 +37,7 @@ public class WidgetCenteredText extends AbstractGui implements IRenderable
     public void render(@Nonnull MatrixStack matrixStack, int mouseX, int mouseY, float unused)
     {
         RenderSystem.scaled(this.scale, this.scale, this.scale);
-        drawCenteredString(matrixStack, Minecraft.getInstance().fontRenderer, this.text, (int) (this.x / this.scale), (int) (this.y / this.scale), TextFormatting.WHITE.getColor());
+        drawCenteredString(matrixStack, Minecraft.getInstance().font, this.text, (int) (this.x / this.scale), (int) (this.y / this.scale), TextFormatting.WHITE.getColor());
         RenderSystem.scaled(1.0 / this.scale, 1.0 / this.scale, 1.0 / this.scale);
     }
 }

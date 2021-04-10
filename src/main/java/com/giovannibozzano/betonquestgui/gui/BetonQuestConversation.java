@@ -59,12 +59,12 @@ public class BetonQuestConversation extends Screen
     {
         this.buttons.clear();
         this.objects.clear();
-        this.header = new WidgetText(new StringTextComponent(this.npcName).setStyle(Style.EMPTY.applyFormatting(TextFormatting.BOLD).applyFormatting(TextFormatting.GREEN)), STRING_BORDER, super.height - NAME_STRING_HEIGHT);
+        this.header = new WidgetText(new StringTextComponent(this.npcName).setStyle(Style.EMPTY.applyFormat(TextFormatting.BOLD).applyFormat(TextFormatting.GREEN)), STRING_BORDER, super.height - NAME_STRING_HEIGHT);
         this.objects.add(new WidgetResizableDiv(this.width / 3 * 2, super.height - CONVERSATION_DIV_HEIGHT, super.width / 3, CONVERSATION_DIV_HEIGHT));
         this.objects.add(new WidgetResizableDiv(this.width / 3 * 2, super.height - NAME_DIV_START_HEIGHT, super.width / 3, NAME_DIV_HEIGHT));
         this.objects.add(new WidgetResizableDiv(0, this.height - CONVERSATION_DIV_HEIGHT, super.width / 3 * 2, CONVERSATION_DIV_HEIGHT));
         this.objects.add(new WidgetResizableDiv(0, this.height - NAME_DIV_START_HEIGHT, super.width / 3 * 2, NAME_DIV_HEIGHT));
-        this.objects.add(new WidgetText(this.minecraft.player.getDisplayName().deepCopy().setStyle(Style.EMPTY.applyFormatting(TextFormatting.BOLD).applyFormatting(TextFormatting.YELLOW)), super.width / 3 * 2 + STRING_BORDER, super.height - NAME_STRING_HEIGHT));
+        this.objects.add(new WidgetText(this.minecraft.player.getDisplayName().copy().setStyle(Style.EMPTY.applyFormat(TextFormatting.BOLD).applyFormat(TextFormatting.YELLOW)), super.width / 3 * 2 + STRING_BORDER, super.height - NAME_STRING_HEIGHT));
 
         this.leftButtonUp = new WidgetButton(
                 this.width / 3 * 2 - BUTTON_DIMENSION - STRING_BORDER,
@@ -204,12 +204,12 @@ public class BetonQuestConversation extends Screen
         this.children.add(this.leftButtonDown);
         this.children.add(this.rightButtonUp);
         this.children.add(this.rightButtonDown);
-        FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
-        CharacterManager characterManager = fontRenderer.func_238420_b_();
-        RowList choice = new RowList((STRING_HEIGHT - STRING_BORDER) / fontRenderer.FONT_HEIGHT, 0);
-        choice.add(characterManager.func_238362_b_(new TranslationTextComponent("betonQuestGui.closeGui"), super.width / 3 - STRING_BORDER * 3 - BUTTON_DIMENSION, Style.EMPTY));
-        WidgetChoice playerChoice = new WidgetChoice(super.width / 3 * 2 + STRING_BORDER, super.height - STRING_HEIGHT, TextFormatting.YELLOW.getColor(), choice, super.width / 3 - STRING_BORDER * 3 - BUTTON_DIMENSION, ((STRING_HEIGHT - STRING_BORDER) / fontRenderer.FONT_HEIGHT) * fontRenderer.FONT_HEIGHT,
-                widgetChoice -> this.minecraft.displayGuiScreen(null)
+        FontRenderer fontRenderer = Minecraft.getInstance().font;
+        CharacterManager characterManager = fontRenderer.getSplitter();
+        RowList choice = new RowList((STRING_HEIGHT - STRING_BORDER) / fontRenderer.lineHeight, 0);
+        choice.add(characterManager.splitLines(new TranslationTextComponent("betonQuestGui.closeGui"), super.width / 3 - STRING_BORDER * 3 - BUTTON_DIMENSION, Style.EMPTY));
+        WidgetChoice playerChoice = new WidgetChoice(super.width / 3 * 2 + STRING_BORDER, super.height - STRING_HEIGHT, TextFormatting.YELLOW.getColor(), choice, super.width / 3 - STRING_BORDER * 3 - BUTTON_DIMENSION, ((STRING_HEIGHT - STRING_BORDER) / fontRenderer.lineHeight) * fontRenderer.lineHeight,
+                widgetChoice -> this.minecraft.setScreen(null)
         );
         this.rightRows.add(playerChoice);
         this.children.add(playerChoice);
@@ -222,7 +222,7 @@ public class BetonQuestConversation extends Screen
         }
         this.firstLeftLine = false;
         if (this.lastPlayerChoice != null) {
-            this.leftText.append(this.minecraft.player.getDisplayName().deepCopy().setStyle(Style.EMPTY.applyFormatting(TextFormatting.BOLD).applyFormatting(TextFormatting.YELLOW)));
+            this.leftText.append(this.minecraft.player.getDisplayName().copy().setStyle(Style.EMPTY.applyFormat(TextFormatting.BOLD).applyFormat(TextFormatting.YELLOW)));
             this.leftText.append(this.lastPlayerChoice);
             this.leftText.append(new StringTextComponent("\n\n"));
         }
@@ -234,10 +234,10 @@ public class BetonQuestConversation extends Screen
 
     private void updateLeftShift()
     {
-        FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
-        CharacterManager characterManager = fontRenderer.func_238420_b_();
-        if (characterManager.func_238362_b_(this.leftText, super.width / 3 * 2 - STRING_BORDER * 3 - BUTTON_DIMENSION, Style.EMPTY).size() > (STRING_HEIGHT - STRING_BORDER) / fontRenderer.FONT_HEIGHT) {
-            this.leftShift = fontRenderer.func_238425_b_(this.leftText, super.width / 3 * 2 - STRING_BORDER * 3 - BUTTON_DIMENSION).size() - (STRING_HEIGHT - STRING_BORDER) / fontRenderer.FONT_HEIGHT;
+        FontRenderer fontRenderer = Minecraft.getInstance().font;
+        CharacterManager characterManager = fontRenderer.getSplitter();
+        if (characterManager.splitLines(this.leftText, super.width / 3 * 2 - STRING_BORDER * 3 - BUTTON_DIMENSION, Style.EMPTY).size() > (STRING_HEIGHT - STRING_BORDER) / fontRenderer.lineHeight) {
+            this.leftShift = fontRenderer.split(this.leftText, super.width / 3 * 2 - STRING_BORDER * 3 - BUTTON_DIMENSION).size() - (STRING_HEIGHT - STRING_BORDER) / fontRenderer.lineHeight;
         } else {
             this.leftShift = 0;
         }
@@ -254,7 +254,7 @@ public class BetonQuestConversation extends Screen
     public void updateNpcName(String npcName)
     {
         this.npcName = npcName;
-        this.header = new WidgetText(new StringTextComponent(this.npcName).setStyle(Style.EMPTY.applyFormatting(TextFormatting.BOLD).applyFormatting(TextFormatting.GREEN)), STRING_BORDER, super.height - NAME_STRING_HEIGHT);
+        this.header = new WidgetText(new StringTextComponent(this.npcName).setStyle(Style.EMPTY.applyFormat(TextFormatting.BOLD).applyFormat(TextFormatting.GREEN)), STRING_BORDER, super.height - NAME_STRING_HEIGHT);
     }
 
     public void resetRightList()
@@ -264,14 +264,14 @@ public class BetonQuestConversation extends Screen
 
     private void reloadLeftRows()
     {
-        FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
-        CharacterManager characterManager = fontRenderer.func_238420_b_();
-        this.leftRowList = new RowList((STRING_HEIGHT - STRING_BORDER) / fontRenderer.FONT_HEIGHT, this.leftShift);
-        this.leftRowList.add(characterManager.func_238362_b_(this.leftText, super.width / 3 * 2 - STRING_BORDER * 3 - BUTTON_DIMENSION, Style.EMPTY));
+        FontRenderer fontRenderer = Minecraft.getInstance().font;
+        CharacterManager characterManager = fontRenderer.getSplitter();
+        this.leftRowList = new RowList((STRING_HEIGHT - STRING_BORDER) / fontRenderer.lineHeight, this.leftShift);
+        this.leftRowList.add(characterManager.splitLines(this.leftText, super.width / 3 * 2 - STRING_BORDER * 3 - BUTTON_DIMENSION, Style.EMPTY));
         this.leftRows.clear();
-        for (int index = 0, row = 0; index < this.leftRowList.getLinesAmount() && row < (STRING_HEIGHT - STRING_BORDER) / fontRenderer.FONT_HEIGHT; index++, row++) {
+        for (int index = 0, row = 0; index < this.leftRowList.getLinesAmount() && row < (STRING_HEIGHT - STRING_BORDER) / fontRenderer.lineHeight; index++, row++) {
             Row textRow = this.leftRowList.getRow(row);
-            this.leftRows.add(new WidgetRow(STRING_BORDER, super.height - STRING_HEIGHT + row * fontRenderer.FONT_HEIGHT, textRow));
+            this.leftRows.add(new WidgetRow(STRING_BORDER, super.height - STRING_HEIGHT + row * fontRenderer.lineHeight, textRow));
         }
         this.leftButtonUp.setVisible(this.leftRowList.canShiftUp());
         this.leftButtonDown.setVisible(this.leftRowList.canShiftDown());
@@ -279,12 +279,12 @@ public class BetonQuestConversation extends Screen
 
     private void reloadRightRows()
     {
-        FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
-        CharacterManager characterManager = fontRenderer.func_238420_b_();
-        this.choices = new ChoiceList((STRING_HEIGHT - STRING_BORDER) / fontRenderer.FONT_HEIGHT);
-        for (int index = 0; index < this.indexedChoices.size(); index++) {
-            RowList choice = new RowList((STRING_HEIGHT - STRING_BORDER) / fontRenderer.FONT_HEIGHT, 0);
-            choice.add(characterManager.func_238362_b_(new StringTextComponent(this.indexedChoices.get(index).getText()), super.width / 3 - STRING_BORDER * 3 - BUTTON_DIMENSION, Style.EMPTY));
+        FontRenderer fontRenderer = Minecraft.getInstance().font;
+        CharacterManager characterManager = fontRenderer.getSplitter();
+        this.choices = new ChoiceList((STRING_HEIGHT - STRING_BORDER) / fontRenderer.lineHeight);
+        for (IndexedChoice indexedChoice : this.indexedChoices) {
+            RowList choice = new RowList((STRING_HEIGHT - STRING_BORDER) / fontRenderer.lineHeight, 0);
+            choice.add(characterManager.splitLines(new StringTextComponent(indexedChoice.getText()), super.width / 3 - STRING_BORDER * 3 - BUTTON_DIMENSION, Style.EMPTY));
             this.choices.add(choice);
         }
         this.choices.setAbsoluteShift(this.rightShift);
@@ -300,23 +300,23 @@ public class BetonQuestConversation extends Screen
             // Blank line
             this.rightRows.add(new WidgetRow(
                     super.width / 3 * 2 + STRING_BORDER,
-                    super.height - STRING_HEIGHT + fontRenderer.FONT_HEIGHT,
+                    super.height - STRING_HEIGHT + fontRenderer.lineHeight,
                     new Row(new StringTextComponent(""))
             ));
             verticalOffset += 1;
         }
         int choicesShift = this.choices.getChoicesShift();
         for (int index = 0, /* Lines amount of the partially hidden choice */ partiallyHiddenLines = 0;
-             index < this.choices.getSize() && verticalOffset - partiallyHiddenLines < (STRING_HEIGHT - STRING_BORDER) / fontRenderer.FONT_HEIGHT; index++) {
+             index < this.choices.getSize() && verticalOffset - partiallyHiddenLines < (STRING_HEIGHT - STRING_BORDER) / fontRenderer.lineHeight; index++) {
             RowList choice = this.choices.get(choicesShift + index);
             int id = choicesShift + index + 1;
             WidgetChoice playerChoice = new WidgetChoice(
                     super.width / 3 * 2 + STRING_BORDER,
-                    super.height - STRING_HEIGHT + (verticalOffset - partiallyHiddenLines) * fontRenderer.FONT_HEIGHT,
+                    super.height - STRING_HEIGHT + (verticalOffset - partiallyHiddenLines) * fontRenderer.lineHeight,
                     TextFormatting.YELLOW.getColor(),
                     choice,
                     super.width / 3 - STRING_BORDER * 3 - BUTTON_DIMENSION,
-                    ((STRING_HEIGHT - STRING_BORDER) / fontRenderer.FONT_HEIGHT - verticalOffset + partiallyHiddenLines) * fontRenderer.FONT_HEIGHT,
+                    ((STRING_HEIGHT - STRING_BORDER) / fontRenderer.lineHeight - verticalOffset + partiallyHiddenLines) * fontRenderer.lineHeight,
                     widgetChoice -> this.actionPerformedRowList(widgetChoice, id)
             );
             this.rightRows.add(playerChoice);
@@ -324,7 +324,7 @@ public class BetonQuestConversation extends Screen
             // Blank line
             this.rightRows.add(new WidgetRow(
                     super.width / 3 * 2 + STRING_BORDER,
-                    super.height - STRING_HEIGHT + (verticalOffset - partiallyHiddenLines + 1) * fontRenderer.FONT_HEIGHT,
+                    super.height - STRING_HEIGHT + (verticalOffset - partiallyHiddenLines + 1) * fontRenderer.lineHeight,
                     new Row(new StringTextComponent(""))
             ));
             verticalOffset += choice.getLinesAmount() + 1;

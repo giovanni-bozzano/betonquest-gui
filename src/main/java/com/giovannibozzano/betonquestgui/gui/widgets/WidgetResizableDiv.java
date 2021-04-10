@@ -52,9 +52,9 @@ public class WidgetResizableDiv extends AbstractGui implements IRenderable
     {
         Minecraft minecraft = Minecraft.getInstance();
         RenderSystem.color4f(this.red, this.green, this.blue, this.alpha);
-        minecraft.getTextureManager().bindTexture(BACKGROUND_TEXTURE);
+        minecraft.getTextureManager().bind(BACKGROUND_TEXTURE);
         this.renderBackground(this.x + 6, this.y + 6, 0, 0, this.width - 12, this.height - 12);
-        minecraft.getTextureManager().bindTexture(BORDER_TEXTURE);
+        minecraft.getTextureManager().bind(BORDER_TEXTURE);
         this.renderBorder(this.x, this.y, 0, 0, 6, 6);
         boolean flag = true;
         int counter = 0;
@@ -125,14 +125,14 @@ public class WidgetResizableDiv extends AbstractGui implements IRenderable
 
     public void renderTexture(int x, int y, int offsetX, int offsetY, int width, int height, float f1, float f2)
     {
-        BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
+        BufferBuilder bufferBuilder = Tessellator.getInstance().getBuilder();
         bufferBuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-        bufferBuilder.pos(x, y + height, this.getBlitOffset()).tex(offsetX * f1, (offsetY + height) * f2).endVertex();
-        bufferBuilder.pos(x + width, y + height, this.getBlitOffset()).tex((offsetX + width) * f1, (offsetY + height) * f2).endVertex();
-        bufferBuilder.pos(x + width, y, this.getBlitOffset()).tex((offsetX + width) * f1, offsetY * f2).endVertex();
-        bufferBuilder.pos(x, y, this.getBlitOffset()).tex(offsetX * f1, offsetY * f2).endVertex();
-        bufferBuilder.finishDrawing();
+        bufferBuilder.vertex(x, y + height, this.getBlitOffset()).uv(offsetX * f1, (offsetY + height) * f2).endVertex();
+        bufferBuilder.vertex(x + width, y + height, this.getBlitOffset()).uv((offsetX + width) * f1, (offsetY + height) * f2).endVertex();
+        bufferBuilder.vertex(x + width, y, this.getBlitOffset()).uv((offsetX + width) * f1, offsetY * f2).endVertex();
+        bufferBuilder.vertex(x, y, this.getBlitOffset()).uv(offsetX * f1, offsetY * f2).endVertex();
+        bufferBuilder.end();
         RenderSystem.enableAlphaTest();
-        WorldVertexBufferUploader.draw(bufferBuilder);
+        WorldVertexBufferUploader.end(bufferBuilder);
     }
 }

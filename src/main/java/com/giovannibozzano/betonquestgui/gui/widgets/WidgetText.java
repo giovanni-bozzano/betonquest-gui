@@ -37,7 +37,7 @@ public class WidgetText extends AbstractGui implements IRenderable
     public void render(@Nonnull MatrixStack matrixStack, int mouseX, int mouseY, float unused)
     {
         RenderSystem.scaled(this.scale, this.scale, this.scale);
-        drawString(matrixStack, Minecraft.getInstance().fontRenderer, this.text, (int) (this.x / this.scale), (int) (this.y / this.scale), TextFormatting.WHITE.getColor());
+        drawString(matrixStack, Minecraft.getInstance().font, this.text, (int) (this.x / this.scale), (int) (this.y / this.scale), TextFormatting.WHITE.getColor());
         RenderSystem.scaled(1.0F / this.scale, 1.0F / this.scale, 1.0F / this.scale);
     }
 }

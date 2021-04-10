@@ -44,7 +44,7 @@ public class WidgetChoice extends AbstractGui implements IRenderable, IGuiEventL
         if (!this.isMouseOver(mouseX, mouseY)) {
             return false;
         }
-        this.playDownSound(Minecraft.getInstance().getSoundHandler());
+        this.playDownSound(Minecraft.getInstance().getSoundManager());
         this.onPress.onPress(this);
         return true;
     }
@@ -52,25 +52,25 @@ public class WidgetChoice extends AbstractGui implements IRenderable, IGuiEventL
     @Override
     public void render(@Nonnull MatrixStack matrixStack, int mouseX, int mouseY, float unused)
     {
-        FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
-        for (int row = 0; this.choice.getShift() + row < this.choice.getLinesAmount() && row - this.choice.getRowModifier() < this.maximumHeight / fontRenderer.FONT_HEIGHT; row++) {
+        FontRenderer fontRenderer = Minecraft.getInstance().font;
+        for (int row = 0; this.choice.getShift() + row < this.choice.getLinesAmount() && row - this.choice.getRowModifier() < this.maximumHeight / fontRenderer.lineHeight; row++) {
             Row textRow = this.choice.getRow(row);
             if (this.isMouseOver(mouseX, mouseY)) {
-                new WidgetRow(this.x, this.y + row * fontRenderer.FONT_HEIGHT, this.mouseOverColor, textRow).render(matrixStack, mouseX, mouseY, unused);
+                new WidgetRow(this.x, this.y + row * fontRenderer.lineHeight, this.mouseOverColor, textRow).render(matrixStack, mouseX, mouseY, unused);
             } else {
-                new WidgetRow(this.x, this.y + row * fontRenderer.FONT_HEIGHT, textRow).render(matrixStack, mouseX, mouseY, unused);
+                new WidgetRow(this.x, this.y + row * fontRenderer.lineHeight, textRow).render(matrixStack, mouseX, mouseY, unused);
             }
         }
     }
 
     public boolean isMouseOver(double mouseX, double mouseY)
     {
-        return mouseX >= this.x && mouseX < this.x + this.maximumWidth && mouseY >= this.y && mouseY < this.y + this.maximumHeight && mouseY < this.y + (this.choice.getLinesAmount() - this.choice.getShift()) * Minecraft.getInstance().fontRenderer.FONT_HEIGHT;
+        return mouseX >= this.x && mouseX < this.x + this.maximumWidth && mouseY >= this.y && mouseY < this.y + this.maximumHeight && mouseY < this.y + (this.choice.getLinesAmount() - this.choice.getShift()) * Minecraft.getInstance().font.lineHeight;
     }
 
     public void playDownSound(SoundHandler soundHandler)
     {
-        soundHandler.play(SimpleSound.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+        soundHandler.play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
     }
 
     public RowList getChoice()
