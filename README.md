@@ -1,7 +1,7 @@
 # BetonQuest GUI
 This client side Forge mod is designed to work with the BetonQuest Spigot plugin.
 
-**Minecraft version: 1.16.5**
+**Minecraft version: 1.17.1**
 
 ![screenshot](../master/images/demo.png?raw=true)
 

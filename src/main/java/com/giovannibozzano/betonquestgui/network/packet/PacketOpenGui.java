@@ -1,14 +1,14 @@
 package com.giovannibozzano.betonquestgui.network.packet;
 
 import com.giovannibozzano.betonquestgui.network.PacketHandler;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
 public class PacketOpenGui
 {
-    public static PacketOpenGui decode(PacketBuffer buffer)
+    public static PacketOpenGui decode(FriendlyByteBuf buffer)
     {
         return new PacketOpenGui();
     }

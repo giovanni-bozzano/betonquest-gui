@@ -1,18 +1,18 @@
 package com.giovannibozzano.betonquestgui.network.packet;
 
 import com.giovannibozzano.betonquestgui.network.PacketHandler;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
 public class PacketCloseGui
 {
-    public static void encode(PacketCloseGui packet, PacketBuffer buffer)
+    public static void encode(PacketCloseGui packet, FriendlyByteBuf buffer)
     {
     }
 
-    public static PacketCloseGui decode(PacketBuffer buffer)
+    public static PacketCloseGui decode(FriendlyByteBuf buffer)
     {
         return new PacketCloseGui();
     }

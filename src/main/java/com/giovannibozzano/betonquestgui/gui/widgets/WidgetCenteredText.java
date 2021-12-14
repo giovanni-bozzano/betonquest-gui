@@ -1,26 +1,25 @@
 package com.giovannibozzano.betonquestgui.gui.widgets;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.client.gui.IRenderable;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.components.Widget;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nonnull;
 
 @OnlyIn(Dist.CLIENT)
-public class WidgetCenteredText extends AbstractGui implements IRenderable
+public class WidgetCenteredText extends GuiComponent implements Widget
 {
-    private final IFormattableTextComponent text;
+    private final MutableComponent text;
     private final int x;
     private final int y;
-    private final double scale;
+    private final float scale;
 
-    public WidgetCenteredText(IFormattableTextComponent text, int x, int y, double scale)
+    public WidgetCenteredText(MutableComponent text, int x, int y, float scale)
     {
         this.text = text;
         this.x = x;
@@ -28,16 +27,16 @@ public class WidgetCenteredText extends AbstractGui implements IRenderable
         this.scale = scale;
     }
 
-    public WidgetCenteredText(IFormattableTextComponent text, int x, int y)
+    public WidgetCenteredText(MutableComponent text, int x, int y)
     {
-        this(text, x, y, 1.0D);
+        this(text, x, y, 1.0F);
     }
 
     @Override
-    public void render(@Nonnull MatrixStack matrixStack, int mouseX, int mouseY, float unused)
+    public void render(@Nonnull PoseStack matrixStack, int mouseX, int mouseY, float unused)
     {
-        RenderSystem.scaled(this.scale, this.scale, this.scale);
-        drawCenteredString(matrixStack, Minecraft.getInstance().font, this.text, (int) (this.x / this.scale), (int) (this.y / this.scale), TextFormatting.WHITE.getColor());
-        RenderSystem.scaled(1.0 / this.scale, 1.0 / this.scale, 1.0 / this.scale);
+        matrixStack.scale(this.scale, this.scale, this.scale);
+        drawCenteredString(matrixStack, Minecraft.getInstance().font, this.text, (int) (this.x / this.scale), (int) (this.y / this.scale), ChatFormatting.WHITE.getColor());
+        matrixStack.scale(1.0F / this.scale, 1.0F / this.scale, 1.0F / this.scale);
     }
 }

@@ -1,17 +1,10 @@
 package com.giovannibozzano.betonquestgui.gui;
 
-import net.minecraft.util.text.ITextProperties;
+import net.minecraft.network.chat.FormattedText;
 
-public class Row
+public record Row(FormattedText text)
 {
-    private final ITextProperties text;
-
-    public Row(ITextProperties text)
-    {
-        this.text = text;
-    }
-
-    public ITextProperties getText()
+    public FormattedText getText()
     {
         return this.text;
     }

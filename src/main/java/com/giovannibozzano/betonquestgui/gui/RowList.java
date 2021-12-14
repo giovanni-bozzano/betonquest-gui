@@ -1,6 +1,6 @@
 package com.giovannibozzano.betonquestgui.gui;
 
-import net.minecraft.util.text.ITextProperties;
+import net.minecraft.network.chat.FormattedText;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,9 +53,9 @@ public class RowList
         this.rowModifier = rowModifier;
     }
 
-    public void add(List<ITextProperties> list)
+    public void add(List<FormattedText> list)
     {
-        for (ITextProperties text : list) {
+        for (FormattedText text : list) {
             this.rowList.add(new Row(text));
         }
     }

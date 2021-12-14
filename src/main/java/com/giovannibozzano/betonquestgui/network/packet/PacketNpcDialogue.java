@@ -3,8 +3,8 @@ package com.giovannibozzano.betonquestgui.network.packet;
 import com.giovannibozzano.betonquestgui.network.PacketHandler;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
@@ -19,7 +19,7 @@ public class PacketNpcDialogue
         this.text = text;
     }
 
-    public static PacketNpcDialogue decode(PacketBuffer buffer)
+    public static PacketNpcDialogue decode(FriendlyByteBuf buffer)
     {
         byte[] data = new byte[buffer.capacity()];
         buffer.getBytes(0, data);

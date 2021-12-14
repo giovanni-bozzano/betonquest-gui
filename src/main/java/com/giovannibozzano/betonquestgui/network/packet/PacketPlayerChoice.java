@@ -1,17 +1,10 @@
 package com.giovannibozzano.betonquestgui.network.packet;
 
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 
-public class PacketPlayerChoice
+public record PacketPlayerChoice(int id)
 {
-    private final int id;
-
-    public PacketPlayerChoice(int id)
-    {
-        this.id = id;
-    }
-
-    public static void encode(PacketPlayerChoice packet, PacketBuffer buffer)
+    public static void encode(PacketPlayerChoice packet, FriendlyByteBuf buffer)
     {
         buffer.writeInt(packet.id);
     }

@@ -4,14 +4,14 @@ import com.giovannibozzano.betonquestgui.BetonQuestGui;
 import com.giovannibozzano.betonquestgui.gui.BetonQuestConversation;
 import com.giovannibozzano.betonquestgui.gui.IndexedChoice;
 import com.giovannibozzano.betonquestgui.network.packet.*;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraft.network.chat.BaseComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.fmllegacy.network.NetworkRegistry;
+import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,21 +70,21 @@ public class PacketHandler
             }
             BETONQUEST_CONVERSATION.updateNpcName(npcName);
             String[] parts = text.split(BetonQuestConversation.FORMATTING_CODE_PATTERN.pattern());
-            TextComponent textComponent = new StringTextComponent(": ");
-            List<TextFormatting> textFormatting = new ArrayList<>();
+            BaseComponent textComponent = new TextComponent(": ");
+            List<ChatFormatting> textFormatting = new ArrayList<>();
             for (String part : parts) {
                 if (part.length() == 2 && part.charAt(0) == '\u00A7') {
-                    textFormatting.add(TextFormatting.getByCode(part.charAt(1)));
+                    textFormatting.add(ChatFormatting.getByCode(part.charAt(1)));
                 } else {
                     Style style = Style.EMPTY;
-                    for (TextFormatting format : textFormatting) {
+                    for (ChatFormatting format : textFormatting) {
                         style = style.applyFormat(format);
                     }
-                    textComponent.append(new StringTextComponent(part).setStyle(style));
+                    textComponent.append(new TextComponent(part).setStyle(style));
                     textFormatting.clear();
                 }
             }
-            BETONQUEST_CONVERSATION.appendToLeft(new StringTextComponent(npcName).setStyle(Style.EMPTY.applyFormat(TextFormatting.BOLD).applyFormat(TextFormatting.GREEN)), textComponent);
+            BETONQUEST_CONVERSATION.appendToLeft(new TextComponent(npcName).setStyle(Style.EMPTY.applyFormat(ChatFormatting.BOLD).applyFormat(ChatFormatting.GREEN)), textComponent);
             BETONQUEST_CONVERSATION.resetRightList();
         }
     }

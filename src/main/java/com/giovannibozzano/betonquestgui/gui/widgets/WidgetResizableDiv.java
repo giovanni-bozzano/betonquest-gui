@@ -1,23 +1,20 @@
 package com.giovannibozzano.betonquestgui.gui.widgets;
 
 import com.giovannibozzano.betonquestgui.BetonQuestGui;
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.client.gui.IRenderable;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldVertexBufferUploader;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nonnull;
 
 @OnlyIn(Dist.CLIENT)
-public class WidgetResizableDiv extends AbstractGui implements IRenderable
+public class WidgetResizableDiv extends GuiComponent implements Widget
 {
     private static final ResourceLocation BORDER_TEXTURE = new ResourceLocation(BetonQuestGui.MOD_ID, "textures/gui/border.png");
     private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(BetonQuestGui.MOD_ID, "textures/gui/background.png");
@@ -48,13 +45,13 @@ public class WidgetResizableDiv extends AbstractGui implements IRenderable
     }
 
     @Override
-    public void render(@Nonnull MatrixStack matrixStack, int mouseX, int mouseY, float f)
+    public void render(@Nonnull PoseStack matrixStack, int mouseX, int mouseY, float f)
     {
         Minecraft minecraft = Minecraft.getInstance();
-        RenderSystem.color4f(this.red, this.green, this.blue, this.alpha);
-        minecraft.getTextureManager().bind(BACKGROUND_TEXTURE);
+        RenderSystem.setShaderColor(this.red, this.green, this.blue, this.alpha);
+        RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
         this.renderBackground(this.x + 6, this.y + 6, 0, 0, this.width - 12, this.height - 12);
-        minecraft.getTextureManager().bind(BORDER_TEXTURE);
+        RenderSystem.setShaderTexture(0, BORDER_TEXTURE);
         this.renderBorder(this.x, this.y, 0, 0, 6, 6);
         boolean flag = true;
         int counter = 0;
@@ -125,14 +122,16 @@ public class WidgetResizableDiv extends AbstractGui implements IRenderable
 
     public void renderTexture(int x, int y, int offsetX, int offsetY, int width, int height, float f1, float f2)
     {
-        BufferBuilder bufferBuilder = Tessellator.getInstance().getBuilder();
-        bufferBuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+
+        BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
+        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
         bufferBuilder.vertex(x, y + height, this.getBlitOffset()).uv(offsetX * f1, (offsetY + height) * f2).endVertex();
         bufferBuilder.vertex(x + width, y + height, this.getBlitOffset()).uv((offsetX + width) * f1, (offsetY + height) * f2).endVertex();
         bufferBuilder.vertex(x + width, y, this.getBlitOffset()).uv((offsetX + width) * f1, offsetY * f2).endVertex();
         bufferBuilder.vertex(x, y, this.getBlitOffset()).uv(offsetX * f1, offsetY * f2).endVertex();
         bufferBuilder.end();
-        RenderSystem.enableAlphaTest();
-        WorldVertexBufferUploader.end(bufferBuilder);
+
+        BufferUploader.end(bufferBuilder);
     }
 }
