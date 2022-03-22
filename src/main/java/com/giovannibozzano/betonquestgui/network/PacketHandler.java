@@ -3,6 +3,7 @@ package com.giovannibozzano.betonquestgui.network;
 import com.giovannibozzano.betonquestgui.BetonQuestGui;
 import com.giovannibozzano.betonquestgui.gui.BetonQuestConversation;
 import com.giovannibozzano.betonquestgui.gui.IndexedChoice;
+import com.giovannibozzano.betonquestgui.gui.compass.CompassOverlay;
 import com.giovannibozzano.betonquestgui.network.packet.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -10,6 +11,8 @@ import net.minecraft.network.chat.BaseComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.Vec2;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 
@@ -35,7 +38,8 @@ public class PacketHandler
         INSTANCE.messageBuilder(PacketAllowCloseGui.class, id++).decoder(PacketAllowCloseGui::decode).consumer(PacketAllowCloseGui.Handler::handle).add();
         INSTANCE.messageBuilder(PacketNpcDialogue.class, id++).decoder(PacketNpcDialogue::decode).consumer(PacketNpcDialogue.Handler::handle).add();
         INSTANCE.messageBuilder(PacketAvailablePlayerChoice.class, id++).decoder(PacketAvailablePlayerChoice::decode).consumer(PacketAvailablePlayerChoice.Handler::handle).add();
-        INSTANCE.messageBuilder(PacketPlayerChoice.class, id).encoder(PacketPlayerChoice::encode).add();
+        INSTANCE.messageBuilder(PacketPlayerChoice.class, id++).encoder(PacketPlayerChoice::encode).add();
+        INSTANCE.messageBuilder(PacketTargetLocation.class, id).decoder(PacketTargetLocation::decode).consumer(PacketTargetLocation.Handler::handle).add();
     }
 
     public static void handleCreateGui()
@@ -97,5 +101,9 @@ public class PacketHandler
             }
             BETONQUEST_CONVERSATION.appendToRight(new IndexedChoice(id, text));
         }
+    }
+
+    public static void handleTargetLocation(int x, int y, int z) {
+        CompassOverlay.marker_location = new Vec3(x, y ,z);
     }
 }

@@ -1,5 +1,7 @@
 package com.giovannibozzano.betonquestgui;
 
+import com.giovannibozzano.betonquestgui.config.BQGConfig;
+import com.giovannibozzano.betonquestgui.gui.compass.CompassOverlay;
 import com.giovannibozzano.betonquestgui.network.PacketHandler;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -16,6 +18,11 @@ public class BetonQuestGui
 {
     public static final String MOD_ID = "betonquestgui";
     public static final String PROTOCOL_VERSION = "1.0.0";
+
+    public BetonQuestGui() {
+        BQGConfig.register();
+        CompassOverlay.init();
+    }
 
     @SubscribeEvent
     public static void setup(FMLCommonSetupEvent event)
