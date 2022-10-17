@@ -7,11 +7,10 @@ import com.giovannibozzano.betonquestgui.gui.compass.CompassOverlay;
 import com.giovannibozzano.betonquestgui.network.packet.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.BaseComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
@@ -32,14 +31,14 @@ public class PacketHandler
     public static void registerPackets()
     {
         int id = 0;
-        INSTANCE.messageBuilder(PacketCreateGui.class, id++).decoder(PacketCreateGui::decode).consumer(PacketCreateGui.Handler::handle).add();
-        INSTANCE.messageBuilder(PacketOpenGui.class, id++).decoder(PacketOpenGui::decode).consumer(PacketOpenGui.Handler::handle).add();
-        INSTANCE.messageBuilder(PacketCloseGui.class, id++).decoder(PacketCloseGui::decode).encoder(PacketCloseGui::encode).consumer(PacketCloseGui.Handler::handle).add();
-        INSTANCE.messageBuilder(PacketAllowCloseGui.class, id++).decoder(PacketAllowCloseGui::decode).consumer(PacketAllowCloseGui.Handler::handle).add();
-        INSTANCE.messageBuilder(PacketNpcDialogue.class, id++).decoder(PacketNpcDialogue::decode).consumer(PacketNpcDialogue.Handler::handle).add();
-        INSTANCE.messageBuilder(PacketAvailablePlayerChoice.class, id++).decoder(PacketAvailablePlayerChoice::decode).consumer(PacketAvailablePlayerChoice.Handler::handle).add();
+        INSTANCE.messageBuilder(PacketCreateGui.class, id++).decoder(PacketCreateGui::decode).consumerNetworkThread(PacketCreateGui.Handler::handle).add();
+        INSTANCE.messageBuilder(PacketOpenGui.class, id++).decoder(PacketOpenGui::decode).consumerNetworkThread(PacketOpenGui.Handler::handle).add();
+        INSTANCE.messageBuilder(PacketCloseGui.class, id++).decoder(PacketCloseGui::decode).encoder(PacketCloseGui::encode).consumerNetworkThread(PacketCloseGui.Handler::handle).add();
+        INSTANCE.messageBuilder(PacketAllowCloseGui.class, id++).decoder(PacketAllowCloseGui::decode).consumerNetworkThread(PacketAllowCloseGui.Handler::handle).add();
+        INSTANCE.messageBuilder(PacketNpcDialogue.class, id++).decoder(PacketNpcDialogue::decode).consumerNetworkThread(PacketNpcDialogue.Handler::handle).add();
+        INSTANCE.messageBuilder(PacketAvailablePlayerChoice.class, id++).decoder(PacketAvailablePlayerChoice::decode).consumerNetworkThread(PacketAvailablePlayerChoice.Handler::handle).add();
         INSTANCE.messageBuilder(PacketPlayerChoice.class, id++).encoder(PacketPlayerChoice::encode).add();
-        INSTANCE.messageBuilder(PacketTargetLocation.class, id).decoder(PacketTargetLocation::decode).consumer(PacketTargetLocation.Handler::handle).add();
+        INSTANCE.messageBuilder(PacketTargetLocation.class, id).decoder(PacketTargetLocation::decode).consumerNetworkThread(PacketTargetLocation.Handler::handle).add();
     }
 
     public static void handleCreateGui()
@@ -74,7 +73,7 @@ public class PacketHandler
             }
             BETONQUEST_CONVERSATION.updateNpcName(npcName);
             String[] parts = text.split(BetonQuestConversation.FORMATTING_CODE_PATTERN.pattern());
-            BaseComponent textComponent = new TextComponent(": ");
+            MutableComponent textComponent = Component.literal(": ");
             List<ChatFormatting> textFormatting = new ArrayList<>();
             for (String part : parts) {
                 if (part.length() == 2 && part.charAt(0) == '\u00A7') {
@@ -84,11 +83,11 @@ public class PacketHandler
                     for (ChatFormatting format : textFormatting) {
                         style = style.applyFormat(format);
                     }
-                    textComponent.append(new TextComponent(part).setStyle(style));
+                    textComponent.append(Component.literal(part).setStyle(style));
                     textFormatting.clear();
                 }
             }
-            BETONQUEST_CONVERSATION.appendToLeft(new TextComponent(npcName).setStyle(Style.EMPTY.applyFormat(ChatFormatting.BOLD).applyFormat(ChatFormatting.GREEN)), textComponent);
+            BETONQUEST_CONVERSATION.appendToLeft(Component.literal(npcName).setStyle(Style.EMPTY.applyFormat(ChatFormatting.BOLD).applyFormat(ChatFormatting.GREEN)), textComponent);
             BETONQUEST_CONVERSATION.resetRightList();
         }
     }

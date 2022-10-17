@@ -8,14 +8,14 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.gui.OverlayRegistry;
+import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
 @OnlyIn(Dist.CLIENT)
 public class CompassOverlay
@@ -36,16 +36,13 @@ public class CompassOverlay
 
     public static Vec3 marker_location;
 
-    public static void init()
+    public static final IGuiOverlay COMPASS_OVERLAY = ((gui, mStack, partialTicks, screenWidth, screenHeight) ->
     {
-        OverlayRegistry.registerOverlayTop("Beton Gui Compass", (gui, mStack, partialTicks, screenWidth, screenHeight) ->
-        {
-            if(BQGConfig.COMPASS.showCompass.get()){
-                gui.setupOverlayRenderState(true, false);
-                renderCompass(gui, mStack, partialTicks, screenWidth, screenHeight);
-            }
-        });
-    }
+        if(BQGConfig.COMPASS.showCompass.get()){
+            gui.setupOverlayRenderState(true, false);
+            renderCompass(gui, mStack, partialTicks, screenWidth, screenHeight);
+        }
+    });
 
     public static void renderCompass(Gui gui, PoseStack ms, float partialTicks, int screenWidth, int screenHeight)
     {
@@ -152,7 +149,7 @@ public class CompassOverlay
         if(BQGConfig.COMPASS.showDistance.get())
         {
             String distance = distanceFromObjective + "b";
-            MutableComponent formattedDistance = new TextComponent(distance).withStyle(ChatFormatting.WHITE);//.withStyle(ChatFormatting.BOLD);
+            MutableComponent formattedDistance = Component.literal(distance).withStyle(ChatFormatting.WHITE);//.withStyle(ChatFormatting.BOLD);
             int stringWidth = Minecraft.getInstance().font.width(formattedDistance);
 
             if(marker_location.y - Minecraft.getInstance().player.getY() > 4.0)

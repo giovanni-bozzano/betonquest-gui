@@ -130,8 +130,7 @@ public class WidgetResizableDiv extends GuiComponent implements Widget
         bufferBuilder.vertex(x + width, y + height, this.getBlitOffset()).uv((offsetX + width) * f1, (offsetY + height) * f2).endVertex();
         bufferBuilder.vertex(x + width, y, this.getBlitOffset()).uv((offsetX + width) * f1, offsetY * f2).endVertex();
         bufferBuilder.vertex(x, y, this.getBlitOffset()).uv(offsetX * f1, offsetY * f2).endVertex();
-        bufferBuilder.end();
 
-        BufferUploader.end(bufferBuilder);
+        BufferUploader.drawWithShader(bufferBuilder.end());
     }
 }

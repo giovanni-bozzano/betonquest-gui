@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -25,7 +25,7 @@ public class WidgetButton extends Button
 
     public WidgetButton(int x, int y, int width, int height, Button.OnPress onPress, int type)
     {
-        super(x, y, width, height, new TextComponent(""), onPress);
+        super(x, y, width, height, CommonComponents.EMPTY, onPress);
         this.onPress = onPress;
         this.type = type;
     }
@@ -56,6 +56,7 @@ public class WidgetButton extends Button
                 RenderSystem.setShaderTexture(0, BUTTON_UP_TEXTURE);
             }
         }
+
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
 
         BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
@@ -64,9 +65,8 @@ public class WidgetButton extends Button
         bufferBuilder.vertex(this.x + this.width, this.y + this.height, this.getBlitOffset()).uv(1, 1).endVertex();
         bufferBuilder.vertex(this.x + this.width, this.y, this.getBlitOffset()).uv(1, 0).endVertex();
         bufferBuilder.vertex(this.x, this.y, this.getBlitOffset()).uv(0, 0).endVertex();
-        bufferBuilder.end();
 
-        BufferUploader.end(bufferBuilder);
+        BufferUploader.drawWithShader(bufferBuilder.end());
     }
 
     public void setVisible(boolean visible)

@@ -8,7 +8,6 @@ import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.apache.commons.lang3.mutable.MutableInt;
@@ -43,8 +42,8 @@ public class WidgetRow extends GuiComponent implements Widget
         MutableInt xOffset = new MutableInt();
         this.row.getText().visit((style, text) ->
         {
-            Component textComponent = new TextComponent(text).setStyle(style);
-            drawString(matrixStack, Minecraft.getInstance().font, new TextComponent(text).setStyle(style), this.x + xOffset.getValue(), this.y, this.color);
+            Component textComponent = Component.literal(text).setStyle(style);
+            drawString(matrixStack, Minecraft.getInstance().font, Component.literal(text).setStyle(style), this.x + xOffset.getValue(), this.y, this.color);
             xOffset.add(Minecraft.getInstance().font.width(textComponent));
             return Optional.empty();
         }, Style.EMPTY);

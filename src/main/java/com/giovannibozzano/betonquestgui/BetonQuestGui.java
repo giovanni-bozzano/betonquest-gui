@@ -21,7 +21,6 @@ public class BetonQuestGui
 
     public BetonQuestGui() {
         BQGConfig.register();
-        CompassOverlay.init();
     }
 
     @SubscribeEvent

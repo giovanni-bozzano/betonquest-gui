@@ -35,7 +35,7 @@ public class BetonQuestConversation extends Screen
     private final List<Widget> objects = new ArrayList<>();
     private final List<Widget> leftRows = new ArrayList<>();
     private final List<Widget> rightRows = new ArrayList<>();
-    private final BaseComponent leftText = new TextComponent("");
+    private final MutableComponent leftText = Component.literal("");
     private final List<IndexedChoice> indexedChoices = new ArrayList<>();
     private Widget header;
     private String npcName = "LOADING...";
@@ -53,14 +53,14 @@ public class BetonQuestConversation extends Screen
 
     public BetonQuestConversation()
     {
-        super(new TextComponent(""));
+        super(Component.literal(""));
     }
 
     @Override
     public void init()
     {
         this.objects.clear();
-        this.header = new WidgetText(new TextComponent(this.npcName).setStyle(Style.EMPTY.applyFormat(ChatFormatting.BOLD).applyFormat(ChatFormatting.GREEN)), STRING_BORDER, super.height - NAME_STRING_HEIGHT);
+        this.header = new WidgetText(Component.literal(this.npcName).setStyle(Style.EMPTY.applyFormat(ChatFormatting.BOLD).applyFormat(ChatFormatting.GREEN)), STRING_BORDER, super.height - NAME_STRING_HEIGHT);
         this.objects.add(new WidgetResizableDiv(this.width / 3 * 2, super.height - CONVERSATION_DIV_HEIGHT, super.width / 3, CONVERSATION_DIV_HEIGHT));
         this.objects.add(new WidgetResizableDiv(this.width / 3 * 2, super.height - NAME_DIV_START_HEIGHT, super.width / 3, NAME_DIV_HEIGHT));
         this.objects.add(new WidgetResizableDiv(0, this.height - CONVERSATION_DIV_HEIGHT, super.width / 3 * 2, CONVERSATION_DIV_HEIGHT));
@@ -212,7 +212,7 @@ public class BetonQuestConversation extends Screen
         Font fontRenderer = Minecraft.getInstance().font;
         StringSplitter characterManager = fontRenderer.getSplitter();
         RowList choice = new RowList((STRING_HEIGHT - STRING_BORDER) / fontRenderer.lineHeight, 0);
-        choice.add(characterManager.splitLines(new TranslatableComponent("betonQuestGui.closeGui"), super.width / 3 - STRING_BORDER * 3 - BUTTON_DIMENSION, Style.EMPTY));
+        choice.add(characterManager.splitLines(Component.translatable("betonQuestGui.closeGui"), super.width / 3 - STRING_BORDER * 3 - BUTTON_DIMENSION, Style.EMPTY));
         WidgetChoice playerChoice = new WidgetChoice(super.width / 3 * 2 + STRING_BORDER, super.height - STRING_HEIGHT, ChatFormatting.YELLOW.getColor(), choice, super.width / 3 - STRING_BORDER * 3 - BUTTON_DIMENSION, ((STRING_HEIGHT - STRING_BORDER) / fontRenderer.lineHeight) * fontRenderer.lineHeight,
                 widgetChoice -> this.minecraft.setScreen(null)
         );
@@ -223,13 +223,13 @@ public class BetonQuestConversation extends Screen
     public void appendToLeft(MutableComponent name, MutableComponent text)
     {
         if (!this.firstLeftLine) {
-            this.leftText.append(new TextComponent("\n\n"));
+            this.leftText.append(Component.literal("\n\n"));
         }
         this.firstLeftLine = false;
         if (this.lastPlayerChoice != null) {
             this.leftText.append(this.minecraft.player.getDisplayName().copy().setStyle(Style.EMPTY.applyFormat(ChatFormatting.BOLD).applyFormat(ChatFormatting.YELLOW)));
             this.leftText.append(this.lastPlayerChoice);
-            this.leftText.append(new TextComponent("\n\n"));
+            this.leftText.append(Component.literal("\n\n"));
         }
         this.leftText.append(name);
         this.leftText.append(text);
@@ -259,7 +259,7 @@ public class BetonQuestConversation extends Screen
     public void updateNpcName(String npcName)
     {
         this.npcName = npcName;
-        this.header = new WidgetText(new TextComponent(this.npcName).setStyle(Style.EMPTY.applyFormat(ChatFormatting.BOLD).applyFormat(ChatFormatting.GREEN)), STRING_BORDER, super.height - NAME_STRING_HEIGHT);
+        this.header = new WidgetText(Component.literal(this.npcName).withStyle(Style.EMPTY.applyFormat(ChatFormatting.BOLD).applyFormat(ChatFormatting.GREEN)), STRING_BORDER, super.height - NAME_STRING_HEIGHT);
     }
 
     public void resetRightList()
@@ -289,7 +289,7 @@ public class BetonQuestConversation extends Screen
         this.choices = new ChoiceList((STRING_HEIGHT - STRING_BORDER) / fontRenderer.lineHeight);
         for (IndexedChoice indexedChoice : this.indexedChoices) {
             RowList choice = new RowList((STRING_HEIGHT - STRING_BORDER) / fontRenderer.lineHeight, 0);
-            choice.add(characterManager.splitLines(new TextComponent(indexedChoice.getText()), super.width / 3 - STRING_BORDER * 3 - BUTTON_DIMENSION, Style.EMPTY));
+            choice.add(characterManager.splitLines(Component.literal(indexedChoice.getText()), super.width / 3 - STRING_BORDER * 3 - BUTTON_DIMENSION, Style.EMPTY));
             this.choices.add(choice);
         }
         this.choices.setAbsoluteShift(this.rightShift);
@@ -306,7 +306,7 @@ public class BetonQuestConversation extends Screen
             this.rightRows.add(new WidgetRow(
                     super.width / 3 * 2 + STRING_BORDER,
                     super.height - STRING_HEIGHT + fontRenderer.lineHeight,
-                    new Row(new TextComponent(""))
+                    new Row(Component.literal(""))
             ));
             verticalOffset += 1;
         }
@@ -330,7 +330,7 @@ public class BetonQuestConversation extends Screen
             this.rightRows.add(new WidgetRow(
                     super.width / 3 * 2 + STRING_BORDER,
                     super.height - STRING_HEIGHT + (verticalOffset - partiallyHiddenLines + 1) * fontRenderer.lineHeight,
-                    new Row(new TextComponent(""))
+                    new Row(Component.literal(""))
             ));
             verticalOffset += choice.getLinesAmount() + 1;
             partiallyHiddenLines += choice.getShift();
@@ -352,7 +352,7 @@ public class BetonQuestConversation extends Screen
             }
             text.append(widgetChoice.getChoice().getAbsoluteRow(counter).getText().getString());
         }
-        this.lastPlayerChoice = new TextComponent(text.toString());
+        this.lastPlayerChoice = Component.literal(text.toString());
         PacketHandler.INSTANCE.sendToServer(new PacketPlayerChoice(id));
     }
 }

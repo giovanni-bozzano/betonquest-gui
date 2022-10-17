@@ -2,7 +2,7 @@
 
 This client side Forge mod is designed to work with the BetonQuest Spigot plugin.
 
-**Minecraft version: 1.18.1, 1.18.2**
+**Minecraft version: 1.19.2**
 
 ## Features
 #### Chat
