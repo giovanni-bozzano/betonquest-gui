@@ -11,7 +11,6 @@ import net.minecraft.network.chat.BaseComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
@@ -23,8 +22,8 @@ public class PacketHandler
 {
     public static final SimpleChannel INSTANCE = NetworkRegistry.ChannelBuilder
             .named(new ResourceLocation(BetonQuestGui.MOD_ID, "main"))
-            .clientAcceptedVersions(BetonQuestGui.PROTOCOL_VERSION::equals)
-            .serverAcceptedVersions(BetonQuestGui.PROTOCOL_VERSION::equals)
+            .clientAcceptedVersions(NetworkRegistry.acceptMissingOr(BetonQuestGui.PROTOCOL_VERSION))
+            .serverAcceptedVersions(NetworkRegistry.acceptMissingOr(BetonQuestGui.PROTOCOL_VERSION))
             .networkProtocolVersion(() -> BetonQuestGui.PROTOCOL_VERSION)
             .simpleChannel();
     private static BetonQuestConversation BETONQUEST_CONVERSATION;
