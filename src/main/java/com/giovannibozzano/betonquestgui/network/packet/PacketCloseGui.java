@@ -4,6 +4,7 @@ import com.giovannibozzano.betonquestgui.network.PacketHandler;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
+
 import java.util.function.Supplier;
 
 public class PacketCloseGui

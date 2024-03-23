@@ -18,7 +18,7 @@ public class GuiEventListener
         if(!BQGConfig.COMPASS.showCompass.get()) return;
 
         if (VanillaGuiOverlay.BOSS_EVENT_PROGRESS.type() == event.getOverlay() || VanillaGuiOverlay.PLAYER_LIST.type() == event.getOverlay()) {
-            event.getPoseStack().translate(0, (CompassOverlay.POSY + 28), 0);
+            event.getGuiGraphics().pose().translate(0, (CompassOverlay.POSY + 28), 0);
         }
     }
 
@@ -27,7 +27,7 @@ public class GuiEventListener
         if(!BQGConfig.COMPASS.showCompass.get()) return;
 
         if (VanillaGuiOverlay.BOSS_EVENT_PROGRESS.type() == event.getOverlay() || VanillaGuiOverlay.PLAYER_LIST.type() == event.getOverlay()) {
-            event.getPoseStack().translate(0, -(CompassOverlay.POSY + 28), 0);
+            event.getGuiGraphics().pose().translate(0, -(CompassOverlay.POSY + 28), 0);
         }
     }
 }

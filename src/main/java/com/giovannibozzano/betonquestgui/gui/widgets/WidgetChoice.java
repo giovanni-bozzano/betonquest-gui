@@ -5,11 +5,12 @@ import com.giovannibozzano.betonquestgui.gui.RowList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.sounds.SoundEvents;
@@ -19,7 +20,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nonnull;
 
 @OnlyIn(Dist.CLIENT)
-public class WidgetChoice extends GuiComponent implements Widget, GuiEventListener, NarratableEntry
+public class WidgetChoice extends GuiGraphics implements Renderable, GuiEventListener, NarratableEntry
 {
     private final int x;
     private final int y;
@@ -28,9 +29,18 @@ public class WidgetChoice extends GuiComponent implements Widget, GuiEventListen
     private final int maximumWidth;
     private final int maximumHeight;
     private final WidgetChoice.IPressable onPress;
+    private boolean focused = true;
 
-    public WidgetChoice(int x, int y, int mouseOverColor, RowList choice, int maximumWidth, int maximumHeight, WidgetChoice.IPressable onPress)
+    private Minecraft instance;
+    private MultiBufferSource.BufferSource bufferSource;
+
+    public WidgetChoice(Minecraft p_283406_, MultiBufferSource.BufferSource p_282238_, int x, int y, int mouseOverColor, RowList choice, int maximumWidth, int maximumHeight, IPressable onPress)
     {
+        super(p_283406_, p_282238_);
+
+        this.instance = p_283406_;
+        this.bufferSource = p_282238_;
+
         this.x = x;
         this.y = y;
         this.mouseOverColor = mouseOverColor;
@@ -52,15 +62,15 @@ public class WidgetChoice extends GuiComponent implements Widget, GuiEventListen
     }
 
     @Override
-    public void render(@Nonnull PoseStack matrixStack, int mouseX, int mouseY, float unused)
+    public void render(@Nonnull GuiGraphics matrixStack, int mouseX, int mouseY, float unused)
     {
         Font fontRenderer = Minecraft.getInstance().font;
         for (int row = 0; this.choice.getShift() + row < this.choice.getLinesAmount() && row - this.choice.getRowModifier() < this.maximumHeight / fontRenderer.lineHeight; row++) {
             Row textRow = this.choice.getRow(row);
             if (this.isMouseOver(mouseX, mouseY)) {
-                new WidgetRow(this.x, this.y + row * fontRenderer.lineHeight, this.mouseOverColor, textRow).render(matrixStack, mouseX, mouseY, unused);
+                new WidgetRow(instance, bufferSource, this.x, this.y + row * fontRenderer.lineHeight, this.mouseOverColor, textRow).render(matrixStack, mouseX, mouseY, unused);
             } else {
-                new WidgetRow(this.x, this.y + row * fontRenderer.lineHeight, textRow).render(matrixStack, mouseX, mouseY, unused);
+                new WidgetRow(instance, bufferSource, this.x, this.y + row * fontRenderer.lineHeight, textRow).render(matrixStack, mouseX, mouseY, unused);
             }
         }
     }
@@ -68,6 +78,18 @@ public class WidgetChoice extends GuiComponent implements Widget, GuiEventListen
     public boolean isMouseOver(double mouseX, double mouseY)
     {
         return mouseX >= this.x && mouseX < this.x + this.maximumWidth && mouseY >= this.y && mouseY < this.y + this.maximumHeight && mouseY < this.y + (this.choice.getLinesAmount() - this.choice.getShift()) * Minecraft.getInstance().font.lineHeight;
+    }
+
+    @Override
+    public void setFocused(boolean p_265728_)
+    {
+        this.focused = p_265728_;
+    }
+
+    @Override
+    public boolean isFocused()
+    {
+        return this.focused;
     }
 
     public void playDownSound(SoundManager soundHandler)
