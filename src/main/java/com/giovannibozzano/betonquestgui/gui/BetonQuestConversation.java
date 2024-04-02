@@ -61,12 +61,12 @@ public class BetonQuestConversation extends Screen
     public void init()
     {
         this.objects.clear();
-        this.header = new WidgetText(minecraft, minecraft.renderBuffers().bufferSource(), Component.literal(this.npcName).setStyle(Style.EMPTY.applyFormat(ChatFormatting.BOLD).applyFormat(ChatFormatting.GREEN)), STRING_BORDER, super.height - NAME_STRING_HEIGHT);
-        this.objects.add(new WidgetResizableDiv(minecraft, minecraft.renderBuffers().bufferSource(),this.width / 3 * 2, super.height - CONVERSATION_DIV_HEIGHT, super.width / 3, CONVERSATION_DIV_HEIGHT));
-        this.objects.add(new WidgetResizableDiv(minecraft, minecraft.renderBuffers().bufferSource(),this.width / 3 * 2, super.height - NAME_DIV_START_HEIGHT, super.width / 3, NAME_DIV_HEIGHT));
-        this.objects.add(new WidgetResizableDiv(minecraft, minecraft.renderBuffers().bufferSource(),0, this.height - CONVERSATION_DIV_HEIGHT, super.width / 3 * 2, CONVERSATION_DIV_HEIGHT));
-        this.objects.add(new WidgetResizableDiv(minecraft, minecraft.renderBuffers().bufferSource(),0, this.height - NAME_DIV_START_HEIGHT, super.width / 3 * 2, NAME_DIV_HEIGHT));
-        this.objects.add(new WidgetText(minecraft, minecraft.renderBuffers().bufferSource(), this.minecraft.player.getDisplayName().copy().setStyle(Style.EMPTY.applyFormat(ChatFormatting.BOLD).applyFormat(ChatFormatting.YELLOW)), super.width / 3 * 2 + STRING_BORDER, super.height - NAME_STRING_HEIGHT));
+        this.header = new WidgetText(Component.literal(this.npcName).setStyle(Style.EMPTY.applyFormat(ChatFormatting.BOLD).applyFormat(ChatFormatting.GREEN)), STRING_BORDER, super.height - NAME_STRING_HEIGHT);
+        this.objects.add(new WidgetResizableDiv(this.width / 3 * 2, super.height - CONVERSATION_DIV_HEIGHT, super.width / 3, CONVERSATION_DIV_HEIGHT));
+        this.objects.add(new WidgetResizableDiv(this.width / 3 * 2, super.height - NAME_DIV_START_HEIGHT, super.width / 3, NAME_DIV_HEIGHT));
+        this.objects.add(new WidgetResizableDiv(0, this.height - CONVERSATION_DIV_HEIGHT, super.width / 3 * 2, CONVERSATION_DIV_HEIGHT));
+        this.objects.add(new WidgetResizableDiv(0, this.height - NAME_DIV_START_HEIGHT, super.width / 3 * 2, NAME_DIV_HEIGHT));
+        this.objects.add(new WidgetText(this.minecraft.player.getDisplayName().copy().setStyle(Style.EMPTY.applyFormat(ChatFormatting.BOLD).applyFormat(ChatFormatting.YELLOW)), super.width / 3 * 2 + STRING_BORDER, super.height - NAME_STRING_HEIGHT));
 
         this.leftButtonUp = new WidgetButton(
                 this.width / 3 * 2 - BUTTON_DIMENSION - STRING_BORDER,
@@ -184,20 +184,20 @@ public class BetonQuestConversation extends Screen
     }
 
     @Override
-    public void render(@Nonnull GuiGraphics matrixStack, int mouseX, int mouseY, float unused)
+    public void render(@Nonnull GuiGraphics guiGraphics, int mouseX, int mouseY, float unused)
     {
-        this.renderBackground(matrixStack);
-        super.render(matrixStack, mouseX, mouseY, unused);
+        this.renderBackground(guiGraphics);
+        super.render(guiGraphics, mouseX, mouseY, unused);
         for (Renderable object : this.objects) {
-            object.render(matrixStack, mouseX, mouseY, unused);
+            object.render(guiGraphics, mouseX, mouseY, unused);
         }
         for (Renderable leftRow : this.leftRows) {
-            leftRow.render(matrixStack, mouseX, mouseY, unused);
+            leftRow.render(guiGraphics, mouseX, mouseY, unused);
         }
         for (Renderable rightRow : this.rightRows) {
-            rightRow.render(matrixStack, mouseX, mouseY, unused);
+            rightRow.render(guiGraphics, mouseX, mouseY, unused);
         }
-        this.header.render(matrixStack, mouseX, mouseY, unused);
+        this.header.render(guiGraphics, mouseX, mouseY, unused);
     }
 
     public void allowClose()
@@ -214,7 +214,7 @@ public class BetonQuestConversation extends Screen
         StringSplitter characterManager = fontRenderer.getSplitter();
         RowList choice = new RowList((STRING_HEIGHT - STRING_BORDER) / fontRenderer.lineHeight, 0);
         choice.add(characterManager.splitLines(Component.translatable("betonQuestGui.closeGui"), super.width / 3 - STRING_BORDER * 3 - BUTTON_DIMENSION, Style.EMPTY));
-        WidgetChoice playerChoice = new WidgetChoice(minecraft, minecraft.renderBuffers().bufferSource(), super.width / 3 * 2 + STRING_BORDER, super.height - STRING_HEIGHT, ChatFormatting.YELLOW.getColor(), choice, super.width / 3 - STRING_BORDER * 3 - BUTTON_DIMENSION, ((STRING_HEIGHT - STRING_BORDER) / fontRenderer.lineHeight) * fontRenderer.lineHeight,
+        WidgetChoice playerChoice = new WidgetChoice( super.width / 3 * 2 + STRING_BORDER, super.height - STRING_HEIGHT, ChatFormatting.YELLOW.getColor(), choice, super.width / 3 - STRING_BORDER * 3 - BUTTON_DIMENSION, ((STRING_HEIGHT - STRING_BORDER) / fontRenderer.lineHeight) * fontRenderer.lineHeight,
                 widgetChoice -> this.minecraft.setScreen(null)
         );
         this.rightRows.add(playerChoice);
@@ -260,7 +260,7 @@ public class BetonQuestConversation extends Screen
     public void updateNpcName(String npcName)
     {
         this.npcName = npcName;
-        this.header = new WidgetText(minecraft, minecraft.renderBuffers().bufferSource(), Component.literal(this.npcName).withStyle(Style.EMPTY.applyFormat(ChatFormatting.BOLD).applyFormat(ChatFormatting.GREEN)), STRING_BORDER, super.height - NAME_STRING_HEIGHT);
+        this.header = new WidgetText(Component.literal(this.npcName).withStyle(Style.EMPTY.applyFormat(ChatFormatting.BOLD).applyFormat(ChatFormatting.GREEN)), STRING_BORDER, super.height - NAME_STRING_HEIGHT);
     }
 
     public void resetRightList()
@@ -277,7 +277,7 @@ public class BetonQuestConversation extends Screen
         this.leftRows.clear();
         for (int index = 0, row = 0; index < this.leftRowList.getLinesAmount() && row < (STRING_HEIGHT - STRING_BORDER) / fontRenderer.lineHeight; index++, row++) {
             Row textRow = this.leftRowList.getRow(row);
-            this.leftRows.add(new WidgetRow(minecraft, minecraft.renderBuffers().bufferSource(), STRING_BORDER, super.height - STRING_HEIGHT + row * fontRenderer.lineHeight, textRow));
+            this.leftRows.add(new WidgetRow(STRING_BORDER, super.height - STRING_HEIGHT + row * fontRenderer.lineHeight, textRow));
         }
         this.leftButtonUp.setVisible(this.leftRowList.canShiftUp());
         this.leftButtonDown.setVisible(this.leftRowList.canShiftDown());
@@ -304,8 +304,7 @@ public class BetonQuestConversation extends Screen
         int verticalOffset = 0;
         if (this.choices.startWithBlankLine()) {
             // Blank line
-            this.rightRows.add(new WidgetRow(minecraft, minecraft.renderBuffers().bufferSource(),
-                    super.width / 3 * 2 + STRING_BORDER,
+            this.rightRows.add(new WidgetRow(super.width / 3 * 2 + STRING_BORDER,
                     super.height - STRING_HEIGHT + fontRenderer.lineHeight,
                     new Row(Component.literal(""))
             ));
@@ -316,8 +315,7 @@ public class BetonQuestConversation extends Screen
              index < this.choices.getSize() && verticalOffset - partiallyHiddenLines < (STRING_HEIGHT - STRING_BORDER) / fontRenderer.lineHeight; index++) {
             RowList choice = this.choices.get(choicesShift + index);
             int id = choicesShift + index + 1;
-            WidgetChoice playerChoice = new WidgetChoice(minecraft, minecraft.renderBuffers().bufferSource(),
-                    super.width / 3 * 2 + STRING_BORDER,
+            WidgetChoice playerChoice = new WidgetChoice(super.width / 3 * 2 + STRING_BORDER,
                     super.height - STRING_HEIGHT + (verticalOffset - partiallyHiddenLines) * fontRenderer.lineHeight,
                     ChatFormatting.YELLOW.getColor(),
                     choice,
@@ -328,8 +326,7 @@ public class BetonQuestConversation extends Screen
             this.rightRows.add(playerChoice);
             this.addWidget(playerChoice);
             // Blank line
-            this.rightRows.add(new WidgetRow(minecraft, minecraft.renderBuffers().bufferSource(),
-                    super.width / 3 * 2 + STRING_BORDER,
+            this.rightRows.add(new WidgetRow(super.width / 3 * 2 + STRING_BORDER,
                     super.height - STRING_HEIGHT + (verticalOffset - partiallyHiddenLines + 1) * fontRenderer.lineHeight,
                     new Row(Component.literal(""))
             ));

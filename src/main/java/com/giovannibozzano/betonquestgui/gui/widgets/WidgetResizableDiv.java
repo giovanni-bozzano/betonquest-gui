@@ -15,7 +15,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nonnull;
 
 @OnlyIn(Dist.CLIENT)
-public class WidgetResizableDiv extends GuiGraphics implements Renderable
+public class WidgetResizableDiv implements Renderable
 {
     private static final ResourceLocation BORDER_TEXTURE = new ResourceLocation(BetonQuestGui.MOD_ID, "textures/gui/border.png");
     private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(BetonQuestGui.MOD_ID, "textures/gui/background.png");
@@ -28,9 +28,8 @@ public class WidgetResizableDiv extends GuiGraphics implements Renderable
     private final float blue;
     private final float alpha;
 
-    public WidgetResizableDiv(Minecraft instance, MultiBufferSource.BufferSource buffer, int x, int y, int width, int height, float red, float green, float blue, float alpha)
+    public WidgetResizableDiv(int x, int y, int width, int height, float red, float green, float blue, float alpha)
     {
-        super(instance, buffer);
         this.x = x;
         this.y = y;
         this.width = width;
@@ -41,9 +40,9 @@ public class WidgetResizableDiv extends GuiGraphics implements Renderable
         this.alpha = alpha;
     }
 
-    public WidgetResizableDiv(Minecraft instance, MultiBufferSource.BufferSource buffer, int x, int y, int width, int height)
+    public WidgetResizableDiv(int x, int y, int width, int height)
     {
-        this(instance, buffer, x, y, width, height, 0.5F, 0.5F, 0.5F, 0.5F);
+        this(x, y, width, height, 0.5F, 0.5F, 0.5F, 0.5F);
     }
 
     @Override
@@ -133,10 +132,10 @@ public class WidgetResizableDiv extends GuiGraphics implements Renderable
 //        bufferBuilder.vertex(x + width, y, this.getBlitOffset()).uv((offsetX + width) * f1, offsetY * f2).endVertex();
 //        bufferBuilder.vertex(x, y, this.getBlitOffset()).uv(offsetX * f1, offsetY * f2).endVertex();
 
-        bufferBuilder.vertex(x, y + height,0).uv(offsetX * f1, (offsetY + height) * f2).endVertex();
-        bufferBuilder.vertex(x + width, y + height, 0).uv((offsetX + width) * f1, (offsetY + height) * f2).endVertex();
-        bufferBuilder.vertex(x + width, y, 0).uv((offsetX + width) * f1, offsetY * f2).endVertex();
-        bufferBuilder.vertex(x, y, 0).uv(offsetX * f1, offsetY * f2).endVertex();
+        bufferBuilder.vertex(x, y + height,1).uv(offsetX * f1, (offsetY + height) * f2).endVertex();
+        bufferBuilder.vertex(x + width, y + height, 1).uv((offsetX + width) * f1, (offsetY + height) * f2).endVertex();
+        bufferBuilder.vertex(x + width, y, 1).uv((offsetX + width) * f1, offsetY * f2).endVertex();
+        bufferBuilder.vertex(x, y, 1).uv(offsetX * f1, offsetY * f2).endVertex();
 
         BufferUploader.drawWithShader(bufferBuilder.end());
     }

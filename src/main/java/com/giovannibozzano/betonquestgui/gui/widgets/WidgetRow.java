@@ -20,21 +20,20 @@ import java.nio.CharBuffer;
 import java.util.Optional;
 
 @OnlyIn(Dist.CLIENT)
-public class WidgetRow extends GuiGraphics implements Renderable
+public class WidgetRow implements Renderable
 {
     private final int x;
     private final int y;
     private final int color;
     private final Row row;
 
-    public WidgetRow(Minecraft instance, MultiBufferSource.BufferSource p_282238_, int x, int y, Row row)
+    public WidgetRow(int x, int y, Row row)
     {
-        this(instance,p_282238_, x, y, ChatFormatting.WHITE.getColor(), row);
+        this(x, y, ChatFormatting.WHITE.getColor(), row);
     }
 
-    public WidgetRow(Minecraft instance, MultiBufferSource.BufferSource p_282238_ , int x, int y, int color, Row row)
+    public WidgetRow(int x, int y, int color, Row row)
     {
-        super(instance, p_282238_);
         this.x = x;
         this.y = y;
         this.color = color;

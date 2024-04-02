@@ -12,34 +12,24 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nonnull;
 
 @OnlyIn(Dist.CLIENT)
-public class WidgetCenteredText extends GuiGraphics implements Renderable
+public class WidgetCenteredText implements Renderable
 {
     private final MutableComponent text;
     private final int x;
     private final int y;
     private final float scale;
 
-    //TODO: CHECK
-//    public WidgetCenteredText(MutableComponent text, int x, int y, float scale)
-//    {
-//        this.text = text;
-//        this.x = x;
-//        this.y = y;
-//        this.scale = scale;
-//    }
-//
-//    public WidgetCenteredText(MutableComponent text, int x, int y)
-//    {
-//        this(text, x, y, 1.0F);
-//    }
-
-    public WidgetCenteredText(Minecraft p_283406_, MultiBufferSource.BufferSource p_282238_, MutableComponent text, int x, int y, float scale)
+    public WidgetCenteredText(MutableComponent text, int x, int y, float scale)
     {
-        super(p_283406_, p_282238_);
         this.text = text;
         this.x = x;
         this.y = y;
         this.scale = scale;
+    }
+
+    public WidgetCenteredText(MutableComponent text, int x, int y)
+    {
+        this(text, x, y, 1.0F);
     }
 
     @Override

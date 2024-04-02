@@ -20,7 +20,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nonnull;
 
 @OnlyIn(Dist.CLIENT)
-public class WidgetChoice extends GuiGraphics implements Renderable, GuiEventListener, NarratableEntry
+public class WidgetChoice implements Renderable, GuiEventListener, NarratableEntry
 {
     private final int x;
     private final int y;
@@ -31,16 +31,8 @@ public class WidgetChoice extends GuiGraphics implements Renderable, GuiEventLis
     private final WidgetChoice.IPressable onPress;
     private boolean focused = true;
 
-    private Minecraft instance;
-    private MultiBufferSource.BufferSource bufferSource;
-
-    public WidgetChoice(Minecraft p_283406_, MultiBufferSource.BufferSource p_282238_, int x, int y, int mouseOverColor, RowList choice, int maximumWidth, int maximumHeight, IPressable onPress)
+    public WidgetChoice(int x, int y, int mouseOverColor, RowList choice, int maximumWidth, int maximumHeight, IPressable onPress)
     {
-        super(p_283406_, p_282238_);
-
-        this.instance = p_283406_;
-        this.bufferSource = p_282238_;
-
         this.x = x;
         this.y = y;
         this.mouseOverColor = mouseOverColor;
@@ -68,9 +60,9 @@ public class WidgetChoice extends GuiGraphics implements Renderable, GuiEventLis
         for (int row = 0; this.choice.getShift() + row < this.choice.getLinesAmount() && row - this.choice.getRowModifier() < this.maximumHeight / fontRenderer.lineHeight; row++) {
             Row textRow = this.choice.getRow(row);
             if (this.isMouseOver(mouseX, mouseY)) {
-                new WidgetRow(instance, bufferSource, this.x, this.y + row * fontRenderer.lineHeight, this.mouseOverColor, textRow).render(matrixStack, mouseX, mouseY, unused);
+                new WidgetRow(this.x, this.y + row * fontRenderer.lineHeight, this.mouseOverColor, textRow).render(matrixStack, mouseX, mouseY, unused);
             } else {
-                new WidgetRow(instance, bufferSource, this.x, this.y + row * fontRenderer.lineHeight, textRow).render(matrixStack, mouseX, mouseY, unused);
+                new WidgetRow(this.x, this.y + row * fontRenderer.lineHeight, textRow).render(matrixStack, mouseX, mouseY, unused);
             }
         }
     }

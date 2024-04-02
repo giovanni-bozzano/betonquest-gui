@@ -15,18 +15,18 @@ public class GuiEventListener
 {
     @SubscribeEvent
     public static void onRenderGameOverlayPre(RenderGuiOverlayEvent.Pre event) {
-        if(!BQGConfig.COMPASS.showCompass.get()) return;
+        if(!BQGConfig.COMPASS_CONFIG.showCompass.get()) return;
 
-        if (VanillaGuiOverlay.BOSS_EVENT_PROGRESS.type() == event.getOverlay() || VanillaGuiOverlay.PLAYER_LIST.type() == event.getOverlay()) {
+        if(VanillaGuiOverlay.BOSS_EVENT_PROGRESS.type() == event.getOverlay() || VanillaGuiOverlay.PLAYER_LIST.type() == event.getOverlay()) {
             event.getGuiGraphics().pose().translate(0, (CompassOverlay.POSY + 28), 0);
         }
     }
 
     @SubscribeEvent
     public static void onRenderGameOverlayPost(RenderGuiOverlayEvent.Post event) {
-        if(!BQGConfig.COMPASS.showCompass.get()) return;
+        if(!BQGConfig.COMPASS_CONFIG.showCompass.get()) return;
 
-        if (VanillaGuiOverlay.BOSS_EVENT_PROGRESS.type() == event.getOverlay() || VanillaGuiOverlay.PLAYER_LIST.type() == event.getOverlay()) {
+        if(VanillaGuiOverlay.BOSS_EVENT_PROGRESS.type() == event.getOverlay() || VanillaGuiOverlay.PLAYER_LIST.type() == event.getOverlay()) {
             event.getGuiGraphics().pose().translate(0, -(CompassOverlay.POSY + 28), 0);
         }
     }
