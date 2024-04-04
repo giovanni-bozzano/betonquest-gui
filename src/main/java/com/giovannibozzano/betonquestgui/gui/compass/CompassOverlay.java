@@ -49,12 +49,11 @@ public class CompassOverlay
 
         float cameraAngle = -Mth.wrapDegrees(Minecraft.getInstance().player.getYRot() + 90);
 
-        //RenderSystem.setShaderTexture(0, COMPASS_BACKGROUND);
         guiGraphics.blit(COMPASS_BACKGROUND,halfWidth - (COMPASS_FRAME_X / 2), POSY, 0, 0, COMPASS_FRAME_X, COMPASS_FRAME_Y, COMPASS_FRAME_X, COMPASS_FRAME_Y);
 
         double guiScale = Minecraft.getInstance().getWindow().getGuiScale();
 
-        RenderSystem.enableScissor((int) ((halfWidth - (COMPASS_FRAME_X / 2) + 15) * guiScale), 0, (int) ((COMPASS_FRAME_X - 30) * guiScale), (int) (480 * guiScale));
+        RenderSystem.enableScissor((int) ((halfWidth - (COMPASS_FRAME_X / 2) + 15) * guiScale), 0, (int) ((COMPASS_FRAME_X - 30) * guiScale), (int) (screenHeight * guiScale));
 
         drawString(guiGraphics, "N", (int) wrapDegrees(cameraAngle + 90), halfWidth);
         drawString(guiGraphics, "W", (int) wrapDegrees(cameraAngle + 0), halfWidth);
@@ -83,7 +82,6 @@ public class CompassOverlay
 
         RenderSystem.disableScissor();
 
-        //RenderSystem.setShaderTexture(0, COMPASS_DECORATION);
         guiGraphics.blit(COMPASS_DECORATION, halfWidth - (COMPASS_FRAME_X / 2), POSY, 0, 0, COMPASS_FRAME_X, COMPASS_FRAME_Y, COMPASS_FRAME_X, COMPASS_FRAME_Y);
     }
 
@@ -104,6 +102,7 @@ public class CompassOverlay
         if (Math.abs(viewDegree) > VIEWING_ANGLE / 2) {
             return;
         }
+
         /* draw with shadow */
         //Gui.drawCenteredString(ms, Minecraft.getInstance().font, compassCardinal, halfWidth + getBarPosition(viewDegree, 155), POSY + 7, -1);
 
@@ -135,39 +134,31 @@ public class CompassOverlay
 
     public static void drawLocation(GuiGraphics guiGraphics, Vec3 pos, float viewDegree, int halfWidth)
     {
-        if (Math.abs(viewDegree) > (float) VIEWING_ANGLE / 2) {
-            return;
-        }
+        if (Math.abs(viewDegree) > (float) VIEWING_ANGLE / 2) return;
 
         int distanceFromObjective = (int) Math.sqrt(Minecraft.getInstance().player.distanceToSqr(pos));
         int xBarPosition = halfWidth + getBarPosition(viewDegree, COMPASS_FRAME_X / 2);
 
-        if(distanceFromObjective < 5) {
-            return;
-        }
+        if(distanceFromObjective < 5) return;
 
-        //RenderSystem.setShaderTexture(0, QUEST_MARKER_SMALL);
-        guiGraphics.blit(QUEST_MARKER_SMALL,xBarPosition - (COMPASS_MARKER_X / 2), POSY + (COMPASS_MARKER_Y / 2), 200, 0, 0, COMPASS_MARKER_X, COMPASS_MARKER_Y, COMPASS_MARKER_X, COMPASS_MARKER_Y);
+        guiGraphics.blit(QUEST_MARKER_SMALL,xBarPosition - (COMPASS_MARKER_X / 2), POSY + (COMPASS_MARKER_Y / 2),0, 0, COMPASS_MARKER_X, COMPASS_MARKER_Y, COMPASS_MARKER_X, COMPASS_MARKER_Y);
 
         /* Distance */
         if(BQGConfig.COMPASS_CONFIG.showDistance.get())
         {
             String distance = distanceFromObjective + "b";
-            MutableComponent formattedDistance = Component.literal(distance).withStyle(ChatFormatting.WHITE);//.withStyle(ChatFormatting.BOLD);
+            MutableComponent formattedDistance = Component.literal(distance).withStyle(ChatFormatting.WHITE);
             int stringWidth = Minecraft.getInstance().font.width(formattedDistance);
 
             if(marker_location.y - Minecraft.getInstance().player.getY() > 4.0)
             {
-                //RenderSystem.setShaderTexture(0, ARROWS);
                 guiGraphics.blit(ARROWS,
                         xBarPosition + (stringWidth / 2), (POSY + 22), 200, 7, 0, 7, 5, 14, 5);
-
             }
-            else if(marker_location.y - Minecraft.getInstance().player.getY() < -4.0) {
-                //RenderSystem.setShaderTexture(0, ARROWS);
+            else if(marker_location.y - Minecraft.getInstance().player.getY() < -4.0)
+            {
                 guiGraphics.blit(ARROWS,
                         xBarPosition + (stringWidth / 2), (POSY + 22), 200, 0, 0, 7, 5, 14, 5);
-
             }
 
             float scale = 0.75F;

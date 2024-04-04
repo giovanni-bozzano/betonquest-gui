@@ -7,7 +7,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -49,9 +48,9 @@ public class WidgetResizableDiv implements Renderable
     public void render(@Nonnull GuiGraphics guiGraphics, int mouseX, int mouseY, float f)
     {
         Minecraft minecraft = Minecraft.getInstance();
-        RenderSystem.setShaderColor(this.red, this.green, this.blue, this.alpha);
-        RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
-        this.renderBackground(this.x + 6, this.y + 6, 0, 0, this.width - 12, this.height - 12);
+        RenderSystem.setShaderColor(this.red, this.green, this.blue,this.alpha);
+        this.renderBackground(guiGraphics,this.x + 6, this.y + 6, 0, 0, this.width - 12, this.height - 12);
+
         RenderSystem.setShaderTexture(0, BORDER_TEXTURE);
         this.renderBorder(this.x, this.y, 0, 0, 6, 6);
         boolean flag = true;
@@ -109,6 +108,7 @@ public class WidgetResizableDiv implements Renderable
             counter++;
         }
         this.renderBorder(this.x + this.width - 6, this.y + this.height - 6, 118, 77, 6, 6);
+        RenderSystem.setShaderColor(1,1,1,1);
     }
 
     public void renderBorder(int x, int y, int offsetX, int offsetY, int width, int height)
@@ -116,9 +116,9 @@ public class WidgetResizableDiv implements Renderable
         this.renderTexture(x, y, offsetX, offsetY, width, height, 0.008F, 0.012F);
     }
 
-    public void renderBackground(int x, int y, int offsetX, int offsetY, int width, int height)
+    public void renderBackground(GuiGraphics guiGraphics, int x, int y, int offsetX, int offsetY, int width, int height)
     {
-        this.renderTexture(x, y, offsetX, offsetY, width, height, 0.009F, 0.014F);
+        guiGraphics.blit(BACKGROUND_TEXTURE, this.x + 6, this.y + 6, 0, 0, this.width - 12, this.height - 12);
     }
 
     public void renderTexture(int x, int y, int offsetX, int offsetY, int width, int height, float f1, float f2)
@@ -127,10 +127,6 @@ public class WidgetResizableDiv implements Renderable
 
         BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
         bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-//        bufferBuilder.vertex(x, y + height, this.getBlitOffset()).uv(offsetX * f1, (offsetY + height) * f2).endVertex();
-//        bufferBuilder.vertex(x + width, y + height, this.getBlitOffset()).uv((offsetX + width) * f1, (offsetY + height) * f2).endVertex();
-//        bufferBuilder.vertex(x + width, y, this.getBlitOffset()).uv((offsetX + width) * f1, offsetY * f2).endVertex();
-//        bufferBuilder.vertex(x, y, this.getBlitOffset()).uv(offsetX * f1, offsetY * f2).endVertex();
 
         bufferBuilder.vertex(x, y + height,1).uv(offsetX * f1, (offsetY + height) * f2).endVertex();
         bufferBuilder.vertex(x + width, y + height, 1).uv((offsetX + width) * f1, (offsetY + height) * f2).endVertex();

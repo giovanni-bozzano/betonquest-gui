@@ -2,7 +2,6 @@ package com.giovannibozzano.betonquestgui.gui.widgets;
 
 import com.giovannibozzano.betonquestgui.gui.Row;
 import com.giovannibozzano.betonquestgui.gui.RowList;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -10,7 +9,6 @@ import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.sounds.SoundEvents;
@@ -101,7 +99,7 @@ public class WidgetChoice implements Renderable, GuiEventListener, NarratableEnt
     }
 
     @Override
-    public void updateNarration(NarrationElementOutput p_169152_)
+    public void updateNarration(NarrationElementOutput pNarrationElementOutput)
     {
 
     }

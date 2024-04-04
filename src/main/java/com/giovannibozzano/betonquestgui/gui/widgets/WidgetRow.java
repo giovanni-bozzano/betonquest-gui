@@ -1,22 +1,17 @@
 package com.giovannibozzano.betonquestgui.gui.widgets;
 
 import com.giovannibozzano.betonquestgui.gui.Row;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.apache.commons.lang3.mutable.MutableInt;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
-import java.io.IOException;
-import java.nio.CharBuffer;
 import java.util.Optional;
 
 @OnlyIn(Dist.CLIENT)

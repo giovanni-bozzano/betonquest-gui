@@ -4,7 +4,6 @@ import com.giovannibozzano.betonquestgui.gui.widgets.*;
 import com.giovannibozzano.betonquestgui.network.PacketHandler;
 import com.giovannibozzano.betonquestgui.network.packet.PacketCloseGui;
 import com.giovannibozzano.betonquestgui.network.packet.PacketPlayerChoice;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.StringSplitter;
@@ -184,20 +183,23 @@ public class BetonQuestConversation extends Screen
     }
 
     @Override
-    public void render(@Nonnull GuiGraphics guiGraphics, int mouseX, int mouseY, float unused)
+    public void render(@Nonnull GuiGraphics guiGraphics, int mouseX, int mouseY, float pPartialTick)
     {
         this.renderBackground(guiGraphics);
-        super.render(guiGraphics, mouseX, mouseY, unused);
+
+        super.render(guiGraphics, mouseX, mouseY, pPartialTick);
+
         for (Renderable object : this.objects) {
-            object.render(guiGraphics, mouseX, mouseY, unused);
+            object.render(guiGraphics, mouseX, mouseY, pPartialTick);
         }
         for (Renderable leftRow : this.leftRows) {
-            leftRow.render(guiGraphics, mouseX, mouseY, unused);
+            leftRow.render(guiGraphics, mouseX, mouseY, pPartialTick);
         }
         for (Renderable rightRow : this.rightRows) {
-            rightRow.render(guiGraphics, mouseX, mouseY, unused);
+            rightRow.render(guiGraphics, mouseX, mouseY, pPartialTick);
         }
-        this.header.render(guiGraphics, mouseX, mouseY, unused);
+
+        this.header.render(guiGraphics, mouseX, mouseY, pPartialTick);
     }
 
     public void allowClose()

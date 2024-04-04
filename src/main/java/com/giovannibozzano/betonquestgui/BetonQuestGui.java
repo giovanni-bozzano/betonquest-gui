@@ -1,7 +1,6 @@
 package com.giovannibozzano.betonquestgui;
 
 import com.giovannibozzano.betonquestgui.config.BQGConfig;
-import com.giovannibozzano.betonquestgui.gui.compass.CompassOverlay;
 import com.giovannibozzano.betonquestgui.network.PacketHandler;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

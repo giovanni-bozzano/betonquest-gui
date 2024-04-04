@@ -3,7 +3,6 @@ package com.giovannibozzano.betonquestgui.gui.widgets;
 import com.giovannibozzano.betonquestgui.BetonQuestGui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
@@ -38,7 +37,7 @@ public class WidgetButton extends Button
     }
 
     @Override
-    public void render(@Nonnull GuiGraphics matrixStack, int mouseX, int mouseY, float blit)
+    public void render(@Nonnull GuiGraphics matrixStack, int mouseX, int mouseY, float pPartialTick)
     {
         if (!this.visible) {
             return;
@@ -62,15 +61,11 @@ public class WidgetButton extends Button
 
         BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
         bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        //bufferBuilder.vertex(this.x, this.y + this.height, this.getBlitOffset()).uv(0, 1).endVertex();
-        //bufferBuilder.vertex(this.x + this.width, this.y + this.height, this.getBlitOffset()).uv(1, 1).endVertex();
-        //bufferBuilder.vertex(this.x + this.width, this.y, this.getBlitOffset()).uv(1, 0).endVertex();
-        //bufferBuilder.vertex(this.x, this.y, this.getBlitOffset()).uv(0, 0).endVertex();
 
-        bufferBuilder.vertex(this.getX(), this.getY() + this.height, blit).uv(0, 1).endVertex();
-        bufferBuilder.vertex(this.getX() + this.width, this.getY() + this.height, blit).uv(1, 1).endVertex();
-        bufferBuilder.vertex(this.getX() + this.width, this.getY(), blit).uv(1, 0).endVertex();
-        bufferBuilder.vertex(this.getX(), this.getY(), blit).uv(0, 0).endVertex();
+        bufferBuilder.vertex(this.getX(), this.getY() + this.height, 1).uv(0, 1).endVertex();
+        bufferBuilder.vertex(this.getX() + this.width, this.getY() + this.height, 1).uv(1, 1).endVertex();
+        bufferBuilder.vertex(this.getX() + this.width, this.getY(), 1).uv(1, 0).endVertex();
+        bufferBuilder.vertex(this.getX(), this.getY(), 1).uv(0, 0).endVertex();
 
         BufferUploader.drawWithShader(bufferBuilder.end());
     }
